@@ -1,0 +1,1506 @@
+// Translation keys for the application
+// English and Polish translations
+
+type TranslationKey = {
+  en: string;
+  pl: string;
+};
+
+type Translations = {
+  [key: string]: TranslationKey;
+};
+
+export const translations: Translations = {
+  // Agriculture filters
+  "filters.agriculture.type": {
+    en: "Type",
+    pl: "Typ"
+  },
+  "filters.agriculture.typePlaceholder": {
+    en: "Select type",
+    pl: "Wybierz typ"
+  },
+  "filters.agriculture.tractors": {
+    en: "Tractors",
+    pl: "Traktory"
+  },
+  "filters.agriculture.combines": {
+    en: "Combines",
+    pl: "Kombajny"
+  },
+  "filters.agriculture.seeders": {
+    en: "Seeders",
+    pl: "Siewniki"
+  },
+  "filters.agriculture.plows": {
+    en: "Plows",
+    pl: "Pługi"
+  },
+  "filters.agriculture.harvesters": {
+    en: "Harvesters",
+    pl: "Żniwiarki"
+  },
+  "filters.agriculture.sprayers": {
+    en: "Sprayers",
+    pl: "Opryskiwacze"
+  },
+  "filters.agriculture.livestock": {
+    en: "Livestock",
+    pl: "Hodowla zwierząt"
+  },
+  "filters.agriculture.accessories": {
+    en: "Accessories",
+    pl: "Akcesoria rolnicze"
+  },
+  "filters.agriculture.parts": {
+    en: "Parts",
+    pl: "Części zamienne"
+  },
+  "filters.agriculture.tools": {
+    en: "Tools",
+    pl: "Narzędzia"
+  },
+  "filters.agriculture.irrigation": {
+    en: "Irrigation",
+    pl: "Systemy nawadniania"
+  },
+  "filters.agriculture.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.agriculture.brand": {
+    en: "Brand",
+    pl: "Marka"
+  },
+  "filters.agriculture.brandPlaceholder": {
+    en: "Select brand",
+    pl: "Wybierz markę"
+  },
+  "filters.agriculture.otherBrand": {
+    en: "Other brand",
+    pl: "Inna marka"
+  },
+  "filters.agriculture.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.agriculture.new": {
+    en: "New",
+    pl: "Nowy"
+  },
+  "filters.agriculture.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.agriculture.refurbished": {
+    en: "Refurbished",
+    pl: "Odnowiony"
+  },
+  "filters.agriculture.forParts": {
+    en: "For parts",
+    pl: "Na części"
+  },
+  "filters.agriculture.year": {
+    en: "Year of production",
+    pl: "Rok produkcji"
+  },
+  "filters.agriculture.yearMin": {
+    en: "Min year",
+    pl: "Min rok"
+  },
+  "filters.agriculture.yearMax": {
+    en: "Max year",
+    pl: "Max rok"
+  },
+  
+  // Real Estate filters
+  "filters.realestate.type": {
+    en: "Property type",
+    pl: "Typ nieruchomości"
+  },
+  "filters.realestate.typePlaceholder": {
+    en: "Select property type",
+    pl: "Wybierz typ nieruchomości"
+  },
+  "filters.realestate.apartment": {
+    en: "Apartment",
+    pl: "Mieszkanie"
+  },
+  "filters.realestate.house": {
+    en: "House",
+    pl: "Dom"
+  },
+  "filters.realestate.land": {
+    en: "Land",
+    pl: "Działka"
+  },
+  "filters.realestate.commercial": {
+    en: "Commercial",
+    pl: "Lokal użytkowy"
+  },
+  "filters.realestate.garage": {
+    en: "Garage",
+    pl: "Garaż"
+  },
+  "filters.realestate.room": {
+    en: "Room",
+    pl: "Pokój"
+  },
+  "filters.realestate.office": {
+    en: "Office",
+    pl: "Biuro"
+  },
+  "filters.realestate.hall": {
+    en: "Hall",
+    pl: "Hala"
+  },
+  "filters.realestate.vacation": {
+    en: "Vacation property",
+    pl: "Nieruchomość wakacyjna"
+  },
+  "filters.realestate.agricultural": {
+    en: "Agricultural property",
+    pl: "Grunt rolny"
+  },
+  "filters.realestate.investment": {
+    en: "Investment property",
+    pl: "Nieruchomość inwestycyjna"
+  },
+  "filters.realestate.surface": {
+    en: "Surface area",
+    pl: "Powierzchnia"
+  },
+  "filters.realestate.surfaceMin": {
+    en: "Min area (m²)",
+    pl: "Min powierzchnia (m²)"
+  },
+  "filters.realestate.surfaceMax": {
+    en: "Max area (m²)",
+    pl: "Max powierzchnia (m²)"
+  },
+  "filters.realestate.rooms": {
+    en: "Number of rooms",
+    pl: "Liczba pokoi"
+  },
+  "filters.realestate.roomsPlaceholder": {
+    en: "Select number of rooms",
+    pl: "Wybierz liczbę pokoi"
+  },
+  "filters.realestate.floor": {
+    en: "Floor",
+    pl: "Piętro"
+  },
+  "filters.realestate.floorPlaceholder": {
+    en: "Select floor",
+    pl: "Wybierz piętro"
+  },
+  "filters.realestate.basement": {
+    en: "Basement",
+    pl: "Piwnica"
+  },
+  "filters.realestate.groundFloor": {
+    en: "Ground floor",
+    pl: "Parter"
+  },
+  "filters.realestate.floor5Plus": {
+    en: "5th floor and above",
+    pl: "5 piętro i wyżej"
+  },
+  "filters.realestate.attic": {
+    en: "Attic",
+    pl: "Poddasze"
+  },
+  "filters.realestate.marketType": {
+    en: "Market type",
+    pl: "Typ rynku"
+  },
+  "filters.realestate.primary": {
+    en: "Primary market",
+    pl: "Rynek pierwotny"
+  },
+  "filters.realestate.secondary": {
+    en: "Secondary market",
+    pl: "Rynek wtórny"
+  },
+  
+  // Common filter translations
+  "filters.advancedFilters": {
+    en: "Advanced filters",
+    pl: "Filtry zaawansowane"
+  },
+  "filters.categorySpecific": {
+    en: "Category specific filters",
+    pl: "Filtry specyficzne dla kategorii"
+  },
+  "filters.resetCategoryFilters": {
+    en: "Reset category filters",
+    pl: "Resetuj filtry kategorii"
+  },
+  "filters.categories": {
+    en: "Categories",
+    pl: "Kategorie"
+  },
+  "categories.all": {
+    en: "All categories",
+    pl: "Wszystkie kategorie"
+  },
+  "filters.resetAll": {
+    en: "Reset all filters",
+    pl: "Resetuj wszystkie filtry"
+  },
+  "filters.all": {
+    en: "All",
+    pl: "Wszystkie"
+  },
+  "filters.min": {
+    en: "Min",
+    pl: "Min"
+  },
+  "filters.max": {
+    en: "Max",
+    pl: "Max"
+  },
+  "filters.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.sort.title": {
+    en: "Sort by",
+    pl: "Sortuj według"
+  },
+  "filters.sort.newest": {
+    en: "Newest first",
+    pl: "Od najnowszych"
+  },
+  "filters.sort.oldest": {
+    en: "Oldest first",
+    pl: "Od najstarszych"
+  },
+  "filters.sort.priceLow": {
+    en: "Lowest price",
+    pl: "Cena: od najniższej"
+  },
+  "filters.sort.priceHigh": {
+    en: "Highest price",
+    pl: "Cena: od najwyższej"
+  },
+  "filters.price.title": {
+    en: "Price",
+    pl: "Cena"
+  },
+  "filters.price.min": {
+    en: "Min price",
+    pl: "Cena minimalna"
+  },
+  "filters.price.max": {
+    en: "Max price",
+    pl: "Cena maksymalna"
+  },
+  "filters.location.title": {
+    en: "Location",
+    pl: "Lokalizacja"
+  },
+  "filters.location.placeholder": {
+    en: "Enter location",
+    pl: "Podaj lokalizację"
+  },
+  "filters.datePosted.title": {
+    en: "Date posted",
+    pl: "Data dodania"
+  },
+  "filters.datePosted.anytime": {
+    en: "Anytime",
+    pl: "Dowolna data"
+  },
+  "filters.datePosted.today": {
+    en: "Today",
+    pl: "Dzisiaj"
+  },
+  "filters.datePosted.yesterday": {
+    en: "Yesterday",
+    pl: "Wczoraj"
+  },
+  "filters.datePosted.lastWeek": {
+    en: "Last 7 days",
+    pl: "Ostatnie 7 dni"
+  },
+  "filters.datePosted.lastMonth": {
+    en: "Last 30 days",
+    pl: "Ostatnie 30 dni"
+  },
+  // Common
+  "app.name": {
+    en: "JaKupię.pl",
+    pl: "JaKupię.pl"
+  },
+  "app.tagline": {
+    en: "Post What You Want to Buy",
+    pl: "Zamieść, Co Chcesz Kupić"
+  },
+  "app.description": {
+    en: "JaKupię.pl is a reverse marketplace where buyers post what they're looking to buy and sellers come with their best offers.",
+    pl: "JaKupię.pl to odwrócony rynek, gdzie kupujący zamieszczają, czego szukają, a sprzedający przychodzą z najlepszymi ofertami."
+  },
+  
+
+
+  // Navigation
+  "nav.home": {
+    en: "Home",
+    pl: "Strona główna"
+  },
+  "nav.browse": {
+    en: "Browse Ads",
+    pl: "Przeglądaj ogłoszenia"
+  },
+  "nav.howItWorks": {
+    en: "How It Works",
+    pl: "Jak to działa"
+  },
+  "nav.dashboard": {
+    en: "Dashboard",
+    pl: "Panel użytkownika"
+  },
+  "nav.postAd": {
+    en: "Post Ad",
+    pl: "Dodaj ogłoszenie"
+  },
+  "nav.signIn": {
+    en: "Sign In",
+    pl: "Zaloguj się"
+  },
+  "nav.register": {
+    en: "Register",
+    pl: "Zarejestruj się"
+  },
+  "nav.logout": {
+    en: "Logout",
+    pl: "Wyloguj się"
+  },
+  "nav.support": {
+    en: "Support",
+    pl: "Wsparcie"
+  },
+
+  // Hero Section
+  "hero.title": {
+    en: "Buy What You Need, On Your Terms",
+    pl: "Kupuj to, czego potrzebujesz, na Twoich warunkach"
+  },
+  "hero.subtitle": {
+    en: "Post what you're looking to buy and sellers will come to you with their best offers.",
+    pl: "Zamieść czego szukasz, a sprzedający przyjdą do Ciebie z najlepszymi ofertami."
+  },
+  "hero.cta.post": {
+    en: "Post a Buying Ad",
+    pl: "Dodaj ogłoszenie kupna"
+  },
+  "hero.cta.browse": {
+    en: "Browse Ads",
+    pl: "Przeglądaj ogłoszenia"
+  },
+  "hero.cta.post.desc": {
+    en: "Create your buying request",
+    pl: "Utwórz ogłoszenie kupna"
+  },
+  "hero.cta.browse.desc": {
+    en: "Find buying requests",
+    pl: "Znajdź ogłoszenia kupna"
+  },
+  "hero.search.prefix": {
+    en: "Looking for",
+    pl: "Szukam"
+  },
+
+  // Categories
+  "categories.title": {
+    en: "Browse by Category",
+    pl: "Przeglądaj według kategorii"
+  },
+  "categories.electronics": {
+    en: "Electronics",
+    pl: "Elektronika"
+  },
+  "categories.clothing": {
+    en: "Clothing",
+    pl: "Odzież"
+  },
+  "categories.furniture": {
+    en: "Furniture",
+    pl: "Meble"
+  },
+  "categories.vehicles": {
+    en: "Vehicles",
+    pl: "Pojazdy"
+  },
+  "categories.health": {
+    en: "Health",
+    pl: "Zdrowie"
+  },
+  "categories.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+
+  // Featured Ads
+  "featured.title": {
+    en: "Featured Buying Requests",
+    pl: "Wyróżnione ogłoszenia kupna"
+  },
+  "featured.filter": {
+    en: "Filter",
+    pl: "Filtruj"
+  },
+  "featured.sort": {
+    en: "Sort",
+    pl: "Sortuj"
+  },
+  "featured.empty": {
+    en: "No buying requests found",
+    pl: "Nie znaleziono ogłoszeń kupna"
+  },
+  "featured.empty.cta": {
+    en: "Be the first to post what you're looking to buy",
+    pl: "Bądź pierwszym, który zamieści, czego szuka"
+  },
+  "featured.seeAll": {
+    en: "See All Buying Requests",
+    pl: "Zobacz wszystkie ogłoszenia kupna"
+  },
+
+  // How It Works
+  "how.title": {
+    en: "How JaKupie Works",
+    pl: "Jak działa JaKupie"
+  },
+  "how.subtitle": {
+    en: "JaKupie flips the traditional buying experience by letting buyers post what they want to purchase and sellers come to them with their best offers.",
+    pl: "JaKupie odwraca tradycyjne doświadczenie zakupowe, pozwalając kupującym publikować, co chcą kupić, a sprzedawcy przychodzą do nich z najlepszymi ofertami."
+  },
+  "how.step1.title": {
+    en: "1. Post What You Need",
+    pl: "1. Zamieść, czego potrzebujesz"
+  },
+  "how.step1.desc": {
+    en: "Create a detailed ad about what you're looking to buy, including your budget and preferences.",
+    pl: "Utwórz szczegółowe ogłoszenie o tym, co chcesz kupić, w tym budżet i preferencje."
+  },
+  "how.step1.desc.detailed": {
+    en: "Be specific about features, condition, and any other requirements that are important to you.",
+    pl: "Określ dokładnie cechy, stan i inne wymagania, które są dla Ciebie ważne."
+  },
+  "how.step2.title": {
+    en: "2. Get Connected",
+    pl: "2. Nawiąż kontakt"
+  },
+  "how.step2.desc": {
+    en: "Sellers with matching items will contact you through our secure messaging system.",
+    pl: "Sprzedający z pasującymi przedmiotami skontaktują się z Tobą przez nasz bezpieczny system wiadomości."
+  },
+  "how.step2.desc.detailed": {
+    en: "You'll receive notifications when someone responds to your ad.",
+    pl: "Otrzymasz powiadomienia, gdy ktoś odpowie na Twoje ogłoszenie."
+  },
+  "how.step3.title": {
+    en: "3. Make a Deal",
+    pl: "3. Zawrzyj umowę"
+  },
+  "how.step3.desc": {
+    en: "Compare offers, negotiate, and finalize the purchase on your terms.",
+    pl: "Porównaj oferty, negocjuj i sfinalizuj zakup na swoich warunkach."
+  },
+  "how.step3.desc.detailed": {
+    en: "You're in control of which offers to accept and which to decline.",
+    pl: "To Ty decydujesz, które oferty zaakceptować, a które odrzucić."
+  },
+  "how.cta": {
+    en: "Get Started Now",
+    pl: "Rozpocznij teraz"
+  },
+  "how.why": {
+    en: "Why Use JaKupię.pl?",
+    pl: "Dlaczego warto używać JaKupię.pl?"
+  },
+  "browse.noSuggestions": {
+    en: "No suggestions found",
+    pl: "Brak sugestii"
+  },
+  "how.better_prices.title": {
+    en: "Better Prices",
+    pl: "Lepsze ceny"
+  },
+  "how.better_prices.desc": {
+    en: "Sellers compete for your business, which can lead to better prices and deals than you'd find by searching on your own.",
+    pl: "Sprzedawcy konkurują o Twoją uwagę, co może prowadzić do lepszych cen i ofert niż te, które znalazłbyś na własną rękę."
+  },
+  "how.save_time.title": {
+    en: "Save Time",
+    pl: "Oszczędność czasu"
+  },
+  "how.save_time.desc": {
+    en: "No more browsing through endless listings or visiting multiple stores. Post once and let sellers come to you.",
+    pl: "Koniec z przeglądaniem niekończących się ofert lub odwiedzaniem wielu sklepów. Zamieść ogłoszenie raz i pozwól sprzedawcom przyjść do Ciebie."
+  },
+  "how.find_exact.title": {
+    en: "Find Exactly What You Want",
+    pl: "Znajdź dokładnie to, czego szukasz"
+  },
+  "how.find_exact.desc": {
+    en: "Describe exactly what you're looking for, including your must-haves and nice-to-haves, to get more relevant offers.",
+    pl: "Opisz dokładnie, czego szukasz, w tym cechy obowiązkowe i mile widziane, aby otrzymać bardziej trafne oferty."
+  },
+  "how.control.title": {
+    en: "Stay in Control",
+    pl: "Zachowaj kontrolę"
+  },
+  "how.control.desc": {
+    en: "You decide which sellers to respond to and which offers to accept, putting you in control of the buying process.",
+    pl: "Ty decydujesz, którym sprzedawcom odpowiedzieć i które oferty zaakceptować, co daje Ci kontrolę nad procesem zakupu."
+  },
+  "how.faq.title": {
+    en: "Frequently Asked Questions",
+    pl: "Często zadawane pytania"
+  },
+  "how.faq.free.question": {
+    en: "Is JaKupie free to use?",
+    pl: "Czy korzystanie z JaKupie jest bezpłatne?"
+  },
+  "how.faq.free.answer": {
+    en: "Yes, JaKupie is completely free for both buyers and sellers. There are no fees for posting ads or responding to them.",
+    pl: "Tak, JaKupie jest całkowicie bezpłatne zarówno dla kupujących, jak i sprzedających. Nie ma opłat za publikowanie ogłoszeń ani za odpowiadanie na nie."
+  },
+  "how.faq.legitimate.question": {
+    en: "How do I know sellers are legitimate?",
+    pl: "Skąd mam wiedzieć, że sprzedawcy są wiarygodni?"
+  },
+  "how.faq.legitimate.answer": {
+    en: "We recommend reviewing the seller's profile, asking for detailed information about the item, and using secure payment methods when finalizing transactions.",
+    pl: "Zalecamy sprawdzenie profilu sprzedawcy, zapytanie o szczegółowe informacje o przedmiocie i korzystanie z bezpiecznych metod płatności przy finalizacji transakcji."
+  },
+  "how.faq.edit.question": {
+    en: "Can I edit or delete my ad after posting?",
+    pl: "Czy mogę edytować lub usunąć moje ogłoszenie po opublikowaniu?"
+  },
+  "how.faq.edit.answer": {
+    en: "Yes, you can manage your ads from your dashboard. You can mark them as fulfilled when you've found what you're looking for or delete them if you no longer need the item.",
+    pl: "Tak, możesz zarządzać swoimi ogłoszeniami z poziomu panelu. Możesz oznaczyć je jako zrealizowane, gdy znalazłeś to, czego szukałeś, lub usunąć, jeśli już nie potrzebujesz przedmiotu."
+  },
+  "how.faq.payments.question": {
+    en: "Does JaKupie handle payments?",
+    pl: "Czy JaKupie obsługuje płatności?"
+  },
+  "how.faq.payments.answer": {
+    en: "JaKupie does not process payments. We connect buyers and sellers, but any payment arrangements should be made directly between the parties involved.",
+    pl: "JaKupie nie przetwarza płatności. Łączymy kupujących i sprzedających, ale wszelkie ustalenia dotyczące płatności powinny być dokonywane bezpośrednio między zaangażowanymi stronami."
+  },
+  "how.post_first": {
+    en: "Post Your First Buying Request",
+    pl: "Dodaj swoje pierwsze ogłoszenie kupna"
+  },
+
+  // CTA Section
+  "cta.title": {
+    en: "Ready to find what you're looking for?",
+    pl: "Gotowy, by znaleźć to, czego szukasz?"
+  },
+  "cta.subtitle": {
+    en: "Join thousands of buyers who found exactly what they needed at the right price.",
+    pl: "Dołącz do tysięcy kupujących, którzy znaleźli dokładnie to, czego potrzebowali, w odpowiedniej cenie."
+  },
+  "cta.button": {
+    en: "Post a Buying Ad",
+    pl: "Dodaj ogłoszenie kupna"
+  },
+
+  // Testimonials
+  "testimonials.title": {
+    en: "What Our Users Say",
+    pl: "Co mówią nasi użytkownicy"
+  },
+
+  // Auth
+  "auth.signin.title": {
+    en: "Sign In",
+    pl: "Zaloguj się"
+  },
+  "auth.signin.desc": {
+    en: "Enter your credentials to access your account",
+    pl: "Wprowadź dane logowania, aby uzyskać dostęp do swojego konta"
+  },
+  "auth.register.title": {
+    en: "Create an Account",
+    pl: "Utwórz konto"
+  },
+  "auth.register.desc": {
+    en: "Enter your details to create a new account",
+    pl: "Wprowadź swoje dane, aby utworzyć nowe konto"
+  },
+  "auth.username": {
+    en: "Username or Email",
+    pl: "Nazwa użytkownika lub Email"
+  },
+  "auth.usernameOrEmail": {
+    en: "Username or Email",
+    pl: "Nazwa użytkownika lub Email"
+  },
+  "auth.enterUsernameOrEmail": {
+    en: "Enter your username or email",
+    pl: "Wprowadź nazwę użytkownika lub email"
+  },
+  "auth.chooseUsername": {
+    en: "Choose a username",
+    pl: "Wybierz nazwę użytkownika"
+  },
+  "auth.password": {
+    en: "Password",
+    pl: "Hasło"
+  },
+  "auth.enterPassword": {
+    en: "Enter your password",
+    pl: "Wprowadź hasło"
+  },
+  "auth.createPassword": {
+    en: "Create a password",
+    pl: "Utwórz hasło"
+  },
+  "auth.passwordRequirements": {
+    en: "Must be at least 6 characters",
+    pl: "Musi mieć co najmniej 6 znaków"
+  },
+  "auth.fullName": {
+    en: "Full Name",
+    pl: "Imię i nazwisko"
+  },
+  "auth.enterFullName": {
+    en: "Enter your full name",
+    pl: "Wprowadź swoje imię i nazwisko"
+  },
+  "auth.email": {
+    en: "Email",
+    pl: "Email"
+  },
+  "auth.enterEmail": {
+    en: "Enter your email",
+    pl: "Wprowadź swój email"
+  },
+  "auth.confirmPassword": {
+    en: "Confirm Password",
+    pl: "Potwierdź hasło"
+  },
+  "auth.confirmYourPassword": {
+    en: "Confirm your password",
+    pl: "Potwierdź swoje hasło"
+  },
+  "auth.noAccount": {
+    en: "Don't have an account?",
+    pl: "Nie masz konta?"
+  },
+  "auth.createAccount": {
+    en: "Create an account",
+    pl: "Utwórz konto"
+  },
+  "auth.haveAccount": {
+    en: "Already have an account?",
+    pl: "Masz już konto?"
+  },
+  "auth.signIn": {
+    en: "Sign in",
+    pl: "Zaloguj się"
+  },
+  "auth.hero.title": {
+    en: "Buy What You Need, On Your Terms",
+    pl: "Kupuj to, czego potrzebujesz, na Twoich warunkach"
+  },
+  "auth.hero.desc": {
+    en: "Join JaKupie - the marketplace where buyers post what they're looking to purchase and sellers come to them with their best offers.",
+    pl: "Dołącz do JaKupie - rynku, gdzie kupujący zamieszczają, co chcą kupić, a sprzedawcy przychodzą do nich z najlepszymi ofertami."
+  },
+
+  // Browse Ads
+  "browse.title": {
+    en: "Browse Buying Requests",
+    pl: "Przeglądaj ogłoszenia kupna"
+  },
+  "browse.subtitle": {
+    en: "Find people looking to buy items you have for sale",
+    pl: "Znajdź osoby chcące kupić przedmioty, które masz na sprzedaż"
+  },
+  "browse.search": {
+    en: "What are you looking to sell?",
+    pl: "Co chcesz sprzedać?"
+  },
+  "browse.searchButton": {
+    en: "Search",
+    pl: "Szukaj"
+  },
+  "browse.allCategories": {
+    en: "All Categories",
+    pl: "Wszystkie kategorie"
+  },
+  "browse.filters": {
+    en: "Filters",
+    pl: "Filtry"
+  },
+  "browse.filters.price": {
+    en: "Price Range",
+    pl: "Przedział cenowy"
+  },
+  "browse.filters.price.min": {
+    en: "Min Price",
+    pl: "Minimalna cena"
+  },
+  "browse.filters.price.max": {
+    en: "Max Price",
+    pl: "Maksymalna cena"
+  },
+  "browse.filters.location": {
+    en: "Location",
+    pl: "Lokalizacja"
+  },
+  "browse.filters.date": {
+    en: "Date Posted",
+    pl: "Data publikacji"
+  },
+  "browse.filters.date.today": {
+    en: "Today",
+    pl: "Dzisiaj"
+  },
+  "browse.filters.date.yesterday": {
+    en: "Yesterday",
+    pl: "Wczoraj"
+  },
+  "browse.filters.date.lastWeek": {
+    en: "Last 7 days",
+    pl: "Ostatnie 7 dni"
+  },
+  "browse.filters.date.lastMonth": {
+    en: "Last 30 days",
+    pl: "Ostatnie 30 dni"
+  },
+  "browse.filters.date.all": {
+    en: "All time",
+    pl: "Wszystkie"
+  },
+  "browse.filters.category": {
+    en: "Category specific filters",
+    pl: "Filtry specyficzne dla kategorii"
+  },
+  "browse.filters.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "browse.filters.delivery": {
+    en: "Delivery options",
+    pl: "Opcje dostawy"
+  },
+  "browse.filters.sellerType": {
+    en: "Seller type",
+    pl: "Typ sprzedawcy"
+  },
+  "browse.sort": {
+    en: "Sort by",
+    pl: "Sortuj według"
+  },
+  "browse.sort.newest": {
+    en: "Newest first",
+    pl: "Od najnowszych"
+  },
+  "browse.sort.oldest": {
+    en: "Oldest first",
+    pl: "Od najstarszych"
+  },
+  "browse.sort.priceAsc": {
+    en: "Price: Low to High",
+    pl: "Cena: od najniższej"
+  },
+  "browse.sort.priceDesc": {
+    en: "Price: High to Low",
+    pl: "Cena: od najwyższej"
+  },
+  "browse.clearFilters": {
+    en: "Clear all filters",
+    pl: "Wyczyść wszystkie filtry"
+  },
+  "browse.noResults": {
+    en: "No buying requests found",
+    pl: "Nie znaleziono ogłoszeń kupna"
+  },
+  "browse.noResults.desc": {
+    en: "Try adjusting your filters or search terms",
+    pl: "Spróbuj dostosować filtry lub warunki wyszukiwania"
+  },
+
+  // Create Ad
+  "createAd.title": {
+    en: "Post a Buying Request",
+    pl: "Dodaj ogłoszenie kupna"
+  },
+  "createAd.desc": {
+    en: "Create a detailed request for what you're looking to buy",
+    pl: "Utwórz szczegółowe zapytanie o to, co chcesz kupić"
+  },
+  "createAd.form.title": {
+    en: "Title",
+    pl: "Tytuł"
+  },
+  "createAd.form.title.placeholder": {
+    en: "What are you looking to buy?",
+    pl: "Co chcesz kupić?"
+  },
+  "createAd.form.title.desc": {
+    en: "Be specific about what you're looking for",
+    pl: "Określ dokładnie, czego szukasz"
+  },
+  "createAd.form.category": {
+    en: "Category",
+    pl: "Kategoria"
+  },
+  "createAd.form.category.placeholder": {
+    en: "Select a category",
+    pl: "Wybierz kategorię"
+  },
+  "createAd.form.description": {
+    en: "Description",
+    pl: "Opis"
+  },
+  "createAd.form.description.placeholder": {
+    en: "Describe what you're looking for in detail. Include specifications, condition preferences, etc.",
+    pl: "Opisz szczegółowo, czego szukasz. Uwzględnij specyfikacje, preferencje dotyczące stanu itd."
+  },
+  "createAd.form.description.desc": {
+    en: "The more detail you provide, the better matches you'll receive",
+    pl: "Im więcej szczegółów podasz, tym lepsze dopasowania otrzymasz"
+  },
+  "createAd.form.minBudget": {
+    en: "Minimum Budget (optional)",
+    pl: "Minimalny budżet (opcjonalnie)"
+  },
+  "createAd.form.maxBudget": {
+    en: "Maximum Budget (optional)",
+    pl: "Maksymalny budżet (opcjonalnie)"
+  },
+  "createAd.form.location": {
+    en: "Location (optional)",
+    pl: "Lokalizacja (opcjonalnie)"
+  },
+  "createAd.form.location.placeholder": {
+    en: "e.g., San Francisco, CA",
+    pl: "np. Warszawa, Mazowieckie"
+  },
+  "createAd.form.location.desc": {
+    en: "Providing your location helps connect with local sellers",
+    pl: "Podanie lokalizacji pomaga połączyć się z lokalnymi sprzedawcami"
+  },
+  "createAd.form.submit": {
+    en: "Post Ad",
+    pl: "Dodaj ogłoszenie"
+  },
+  "createAd.form.submitting": {
+    en: "Creating Ad...",
+    pl: "Tworzenie ogłoszenia..."
+  },
+
+  // Dashboard
+  "dashboard.title": {
+    en: "My Dashboard",
+    pl: "Mój panel"
+  },
+  "dashboard.subtitle": {
+    en: "Manage your buying ads and seller responses",
+    pl: "Zarządzaj swoimi ogłoszeniami kupna i odpowiedziami sprzedawców"
+  },
+  "dashboard.newRequest": {
+    en: "Post New Request",
+    pl: "Dodaj nowe ogłoszenie"
+  },
+  "dashboard.myAds": {
+    en: "My Buying Requests",
+    pl: "Moje ogłoszenia kupna"
+  },
+  "dashboard.myResponses": {
+    en: "My Seller Responses",
+    pl: "Moje odpowiedzi sprzedawcy"
+  },
+  "dashboard.noAds": {
+    en: "You haven't posted any ads yet",
+    pl: "Nie dodałeś jeszcze żadnych ogłoszeń"
+  },
+  "dashboard.noAds.desc": {
+    en: "Start posting what you want to buy and get offers from sellers",
+    pl: "Zacznij zamieszczać, co chcesz kupić i otrzymuj oferty od sprzedawców"
+  },
+  "dashboard.postFirst": {
+    en: "Post Your First Request",
+    pl: "Dodaj swoje pierwsze ogłoszenie"
+  },
+  "dashboard.noResponses": {
+    en: "You haven't responded to any ads yet",
+    pl: "Nie odpowiedziałeś jeszcze na żadne ogłoszenia"
+  },
+  "dashboard.noResponses.desc": {
+    en: "Find buying requests that match items you want to sell",
+    pl: "Znajdź ogłoszenia kupna, które pasują do przedmiotów, które chcesz sprzedać"
+  },
+  "dashboard.browseRequests": {
+    en: "Browse Buying Requests",
+    pl: "Przeglądaj ogłoszenia kupna"
+  },
+
+  // Theme
+  "theme.switchToDark": {
+    en: "Switch to dark theme",
+    pl: "Przełącz na ciemny motyw"
+  },
+  "theme.switchToLight": {
+    en: "Switch to light theme",
+    pl: "Przełącz na jasny motyw"
+  },
+
+  // Ad Details
+  "adDetails.description": {
+    en: "Description",
+    pl: "Opis"
+  },
+  "adDetails.budget": {
+    en: "Budget",
+    pl: "Budżet"
+  },
+  "adDetails.responses": {
+    en: "Seller Responses",
+    pl: "Odpowiedzi sprzedawców"
+  },
+  "adDetails.noResponses": {
+    en: "No responses yet",
+    pl: "Brak odpowiedzi"
+  },
+  "adDetails.contactBuyer": {
+    en: "Contact Buyer",
+    pl: "Skontaktuj się z kupującym"
+  },
+  "adDetails.contactForm.title": {
+    en: "Contact the Buyer",
+    pl: "Skontaktuj się z kupującym"
+  },
+  "adDetails.contactForm.desc": {
+    en: "Send a message about this item to the buyer",
+    pl: "Wyślij wiadomość do kupującego o tym przedmiocie"
+  },
+  "adDetails.contactForm.message": {
+    en: "Your Message",
+    pl: "Twoja wiadomość"
+  },
+  "adDetails.contactForm.message.placeholder": {
+    en: "Describe the item you're offering, its condition, and any other relevant details",
+    pl: "Opisz przedmiot, który oferujesz, jego stan i inne istotne szczegóły"
+  },
+  "adDetails.contactForm.price": {
+    en: "Your Price (Optional)",
+    pl: "Twoja cena (opcjonalnie)"
+  },
+  "adDetails.contactForm.price.desc": {
+    en: "Leave empty if you'd prefer to discuss pricing later",
+    pl: "Pozostaw puste, jeśli wolisz omówić cenę później"
+  },
+  "adDetails.contactForm.submit": {
+    en: "Send Message",
+    pl: "Wyślij wiadomość"
+  },
+  "adDetails.contactForm.sending": {
+    en: "Sending...",
+    pl: "Wysyłanie..."
+  },
+  "adDetails.contactForm.cancel": {
+    en: "Cancel",
+    pl: "Anuluj"
+  },
+  "adDetails.yourAd": {
+    en: "This is your ad",
+    pl: "To jest twoje ogłoszenie"
+  },
+  "adDetails.inactive": {
+    en: "This ad is no longer active",
+    pl: "To ogłoszenie nie jest już aktywne"
+  },
+
+  // Errors
+  "errors.loading": {
+    en: "Error loading ads. Please try again.",
+    pl: "Błąd podczas ładowania ogłoszeń. Spróbuj ponownie."
+  },
+  
+  // Error Pages
+  "error.notFound.title": {
+    en: "404 Page Not Found",
+    pl: "404 Strona Nie Znaleziona"
+  },
+  "error.notFound.message": {
+    en: "Did you forget to add the page to the router?",
+    pl: "Czy zapomniałeś dodać stronę do routera?"
+  },
+  
+  // Footer
+  "footer.description": {
+    en: "The marketplace where buyers post what they want and sellers come to them.",
+    pl: "Rynek, gdzie kupujący zamieszczają, czego potrzebują, a sprzedawcy przychodzą do nich."
+  },
+  "footer.quickLinks": {
+    en: "Quick Links",
+    pl: "Szybkie linki"
+  },
+  "footer.support": {
+    en: "Support",
+    pl: "Wsparcie"
+  },
+  "footer.helpCenter": {
+    en: "Help Center",
+    pl: "Centrum pomocy"
+  },
+  "footer.safetyTips": {
+    en: "Safety Tips",
+    pl: "Porady bezpieczeństwa"
+  },
+  "footer.contactUs": {
+    en: "Contact Us",
+    pl: "Kontakt"
+  },
+  "footer.privacyPolicy": {
+    en: "Privacy Policy",
+    pl: "Polityka prywatności"
+  },
+  "footer.termsOfService": {
+    en: "Terms of Service",
+    pl: "Warunki korzystania z usługi"
+  },
+  "footer.stayUpdated": {
+    en: "Stay Updated",
+    pl: "Bądź na bieżąco"
+  },
+  "footer.newsletter": {
+    en: "Subscribe to our newsletter for the latest updates and offers.",
+    pl: "Zapisz się do naszego newslettera, aby otrzymywać najnowsze aktualizacje i oferty."
+  },
+  "footer.subscribe": {
+    en: "Subscribe",
+    pl: "Subskrybuj"
+  },
+  "footer.copyright": {
+    en: "All rights reserved.",
+    pl: "Wszelkie prawa zastrzeżone."
+  },
+
+  // Support page
+  "support.title": {
+    en: "Support",
+    pl: "Wsparcie"
+  },
+  "support.helpCenter.title": {
+    en: "Help Center",
+    pl: "Centrum pomocy"
+  },
+  "support.helpCenter.desc": {
+    en: "Find answers to frequently asked questions and solve common problems.",
+    pl: "Znajdź odpowiedzi na najczęściej zadawane pytania i rozwiąż typowe problemy."
+  },
+  "support.safetyTips.title": {
+    en: "Safety Tips",
+    pl: "Porady bezpieczeństwa"
+  },
+  "support.safetyTips.desc": {
+    en: "Learn how to safely use the platform and protect your data.",
+    pl: "Dowiedz się jak bezpiecznie korzystać z platformy i chronić swoje dane."
+  },
+  "support.contact.title": {
+    en: "Contact",
+    pl: "Kontakt"
+  },
+  "support.contact.desc": {
+    en: "Get in touch with our support team if you need help.",
+    pl: "Skontaktuj się z naszym zespołem wsparcia, jeśli potrzebujesz pomocy."
+  },
+  "support.privacy.title": {
+    en: "Privacy Policy",
+    pl: "Polityka prywatności"
+  },
+  "support.privacy.desc": {
+    en: "Learn about our privacy policy and how we protect your data.",
+    pl: "Zapoznaj się z naszą polityką prywatności i sposobem, w jaki chronimy Twoje dane."
+  },
+  "support.terms.title": {
+    en: "Terms of Service",
+    pl: "Warunki korzystania z usługi"
+  },
+  "support.terms.desc": {
+    en: "Review our terms and conditions for using our platform.",
+    pl: "Zapoznaj się z regulaminem i warunkami korzystania z naszej platformy."
+  },
+  "support.needHelp": {
+    en: "Need immediate help?",
+    pl: "Potrzebujesz natychmiastowej pomocy?"
+  },
+  "support.contactSupport": {
+    en: "Contact Support",
+    pl: "Skontaktuj się z obsługą"
+  },
+
+  // Buttons and actions
+  "button.contact": {
+    en: "Contact",
+    pl: "Kontakt"
+  },
+  "button.manage": {
+    en: "Manage",
+    pl: "Zarządzaj"
+  },
+  "button.back": {
+    en: "Back",
+    pl: "Powrót"
+  },
+  
+  // Filters - enhanced version
+  "filters.title": {
+    en: "Filters",
+    pl: "Filtry"
+  },
+  "filters.clearAll": {
+    en: "Clear All",
+    pl: "Wyczyść wszystkie"
+  },
+  "filters.categories": {
+    en: "Categories",
+    pl: "Kategorie"
+  },
+  "filters.priceRange": {
+    en: "Price Range",
+    pl: "Zakres cen"
+  },
+  "filters.minPrice": {
+    en: "Min. Price",
+    pl: "Min. cena"
+  },
+  "filters.maxPrice": {
+    en: "Max. Price",
+    pl: "Maks. cena"
+  },
+  "filters.min": {
+    en: "Min",
+    pl: "Min"
+  },
+  "filters.max": {
+    en: "Max",
+    pl: "Maks"
+  },
+  "filters.from": {
+    en: "From",
+    pl: "Od"
+  },
+  "filters.to": {
+    en: "To",
+    pl: "Do"
+  },
+  "filters.applyPriceFilter": {
+    en: "Apply Price Filter",
+    pl: "Zastosuj filtr ceny"
+  },
+  "filters.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.allConditions": {
+    en: "All Conditions",
+    pl: "Wszystkie stany"
+  },
+  "filters.new": {
+    en: "New",
+    pl: "Nowy"
+  },
+  "filters.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.damaged": {
+    en: "Damaged",
+    pl: "Uszkodzony"
+  },
+  "filters.location": {
+    en: "Location",
+    pl: "Lokalizacja"
+  },
+  "filters.enterLocation": {
+    en: "Enter location",
+    pl: "Wpisz lokalizację"
+  },
+  "filters.sortBy": {
+    en: "Sort By",
+    pl: "Sortuj według"
+  },
+  "filters.newest": {
+    en: "Newest",
+    pl: "Najnowsze"
+  },
+  "filters.oldest": {
+    en: "Oldest",
+    pl: "Najstarsze"
+  },
+  "filters.priceLowToHigh": {
+    en: "Price: Low to High",
+    pl: "Cena: od najniższej"
+  },
+  "filters.priceHighToLow": {
+    en: "Price: High to Low",
+    pl: "Cena: od najwyższej"
+  },
+  "filters.showAdvancedFilters": {
+    en: "Show Advanced Filters",
+    pl: "Pokaż zaawansowane filtry"
+  },
+  "filters.hideAdvancedFilters": {
+    en: "Hide Advanced Filters",
+    pl: "Ukryj zaawansowane filtry"
+  },
+  "filters.datePosted": {
+    en: "Date Posted",
+    pl: "Data dodania"
+  },
+  "filters.anyTime": {
+    en: "Any time",
+    pl: "Dowolny czas"
+  },
+  "filters.today": {
+    en: "Today",
+    pl: "Dzisiaj"
+  },
+  "filters.yesterday": {
+    en: "Yesterday",
+    pl: "Wczoraj"
+  },
+  "filters.lastWeek": {
+    en: "Last week",
+    pl: "Ostatni tydzień"
+  },
+  "filters.lastMonth": {
+    en: "Last month",
+    pl: "Ostatni miesiąc"
+  },
+  "filters.deliveryOptions": {
+    en: "Delivery Options",
+    pl: "Opcje dostawy"
+  },
+  "filters.shipping": {
+    en: "Shipping",
+    pl: "Wysyłka"
+  },
+  "filters.pickup": {
+    en: "Pickup",
+    pl: "Odbiór osobisty"
+  },
+  "filters.meeting": {
+    en: "Meeting",
+    pl: "Spotkanie"
+  },
+  "filters.sellerType": {
+    en: "Seller Type",
+    pl: "Typ sprzedającego"
+  },
+  "filters.allSellers": {
+    en: "All Sellers",
+    pl: "Wszyscy"
+  },
+  "filters.privatePerson": {
+    en: "Private Person",
+    pl: "Osoba prywatna"
+  },
+  "filters.business": {
+    en: "Business",
+    pl: "Firma"
+  },
+  "filters.categorySpecificFilters": {
+    en: "Filters for",
+    pl: "Filtry dla"
+  },
+  "filters.all": {
+    en: "All",
+    pl: "Wszystkie"
+  },
+  "filters.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.selectBrand": {
+    en: "Select Brand",
+    pl: "Wybierz markę"
+  },
+  "filters.brand": {
+    en: "Brand",
+    pl: "Marka"
+  },
+  "filters.model": {
+    en: "Model",
+    pl: "Model"
+  },
+  "filters.enterModel": {
+    en: "Enter model",
+    pl: "Wpisz model"
+  },
+  "filters.productionYear": {
+    en: "Production Year",
+    pl: "Rok produkcji"
+  },
+  "filters.fuelType": {
+    en: "Fuel Type",
+    pl: "Rodzaj paliwa"
+  },
+  "filters.selectFuelType": {
+    en: "Select Fuel Type",
+    pl: "Wybierz rodzaj paliwa"
+  },
+  "filters.petrol": {
+    en: "Petrol",
+    pl: "Benzyna"
+  },
+  "filters.diesel": {
+    en: "Diesel",
+    pl: "Diesel"
+  },
+  "filters.electric": {
+    en: "Electric",
+    pl: "Elektryczny"
+  },
+  "filters.hybrid": {
+    en: "Hybrid",
+    pl: "Hybryda"
+  },
+  "filters.hybridPlugIn": {
+    en: "Hybrid Plug-in",
+    pl: "Hybryda Plug-in"
+  },
+  "filters.lpg": {
+    en: "LPG",
+    pl: "LPG"
+  },
+  "filters.cng": {
+    en: "CNG",
+    pl: "CNG"
+  },
+  "filters.hydrogen": {
+    en: "Hydrogen",
+    pl: "Wodór"
+  },
+  "filters.mileage": {
+    en: "Mileage",
+    pl: "Przebieg"
+  },
+  "filters.engineSize": {
+    en: "Engine Size",
+    pl: "Pojemność silnika"
+  },
+  "filters.transmission": {
+    en: "Transmission",
+    pl: "Skrzynia biegów"
+  },
+  "filters.selectTransmission": {
+    en: "Select Transmission",
+    pl: "Wybierz skrzynię biegów"
+  },
+  "filters.manual": {
+    en: "Manual",
+    pl: "Manualna"
+  },
+  "filters.automatic": {
+    en: "Automatic",
+    pl: "Automatyczna"
+  },
+  "filters.semiAutomatic": {
+    en: "Semi-automatic",
+    pl: "Półautomatyczna"
+  },
+  "filters.bodyType": {
+    en: "Body Type",
+    pl: "Typ nadwozia"
+  },
+  "filters.selectBodyType": {
+    en: "Select Body Type",
+    pl: "Wybierz typ nadwozia"
+  },
+  "filters.color": {
+    en: "Color",
+    pl: "Kolor"
+  },
+  "filters.selectColor": {
+    en: "Select Color",
+    pl: "Wybierz kolor"
+  },
+  "filters.additionalFeatures": {
+    en: "Additional Features",
+    pl: "Dodatkowe cechy"
+  },
+  "filters.propertyType": {
+    en: "Property Type",
+    pl: "Rodzaj nieruchomości"
+  },
+  "filters.selectPropertyType": {
+    en: "Select Property Type",
+    pl: "Wybierz rodzaj nieruchomości"
+  },
+  "filters.transactionType": {
+    en: "Transaction Type",
+    pl: "Rodzaj transakcji"
+  },
+  "filters.selectTransactionType": {
+    en: "Select Transaction Type",
+    pl: "Wybierz rodzaj transakcji"
+  },
+  "filters.area": {
+    en: "Area",
+    pl: "Powierzchnia"
+  },
+  "filters.rooms": {
+    en: "Rooms",
+    pl: "Liczba pokoi"
+  },
+  "filters.selectRooms": {
+    en: "Select Number of Rooms",
+    pl: "Wybierz liczbę pokoi"
+  },
+  "filters.floor": {
+    en: "Floor",
+    pl: "Piętro"
+  },
+  "filters.selectFloor": {
+    en: "Select Floor",
+    pl: "Wybierz piętro"
+  },
+  "filters.amenities": {
+    en: "Amenities",
+    pl: "Udogodnienia"
+  },
+  "filters.electronicType": {
+    en: "Electronic Type",
+    pl: "Rodzaj elektroniki"
+  },
+  "filters.selectType": {
+    en: "Select Type",
+    pl: "Wybierz rodzaj"
+  },
+  "filters.technicalCondition": {
+    en: "Technical Condition",
+    pl: "Stan techniczny"
+  },
+  "filters.selectCondition": {
+    en: "Select Condition",
+    pl: "Wybierz stan"
+  },
+  "button.viewDetails": {
+    en: "View Details",
+    pl: "Zobacz szczegóły"
+  }
+};
+
+// Helper function to get translation
+export const getTranslation = (key: string, language: string): string => {
+  const translation = translations[key];
+  if (!translation) {
+    return key;
+  }
+  
+  return language === 'pl' ? translation.pl : translation.en;
+};

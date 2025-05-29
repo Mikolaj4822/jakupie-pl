@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Polskie kolory - zmienne */
+:root {
+  --polish-red: #dc143c;
+  --polish-white: #ffffff;
+  --polish-yellow: #fff8e1;
+}
+
+/* Responsywność dla dużych rozmiarów czcionki */
+html {
+  overflow-x: hidden;
+}
+
+/* Czysty wygląd strony bez zbędnych wzorów */
+body {
+  background-color: #f9f9f9;
+}
+
+/* Tryb jasny */
+.bg-background, 
+.bg-white {
+  background-color: #f9f9f9 !important;
+}
+
+/* Tryb ciemny */
+.dark body {
+  background-color: #1a1b26 !important;
+}
+
+.dark .bg-card,
+.dark .card,
+.dark div[class*="bg-white"] {
+  background-color: #1a1b26 !important;
+}
+
+/* Karty kategorii z delikatną animacją i spójnym wyglądem */
+.category-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+  border-bottom: 2px solid rgba(220, 20, 60, 0.3) !important;
+}
+
+/* Styl dla strony gdy jest powiększona czcionka */
+html[style*="font-size: 125%"],
+html[style*="font-size: 130%"],
+html[style*="font-size: 135%"],
+html[style*="font-size: 140%"],
+html[style*="font-size: 145%"],
+html[style*="font-size: 150%"] {
+  /* Większe odsunięcia od krawędzi dla lepszej czytelności */
+  body {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  h1, h2, h3 {
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  /* Zmniejszenie paddingów dla dużej czcionki */
+  .p-4 {
+    padding: 0.75rem !important;
+  }
+  
+  .p-6 {
+    padding: 1rem !important;
+  }
+  
+  /* Lepsze zawijanie tekstu */
+  p, span, div, a, button {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  
+  /* Responsywność nawigacji dla dużej czcionki */
+  nav, .nav-container {
+    flex-wrap: wrap !important;
+  }
+  
+  /* Powiększenie przycisków w nawigacji */
+  nav button, nav a {
+    min-height: 2.5rem !important;
+  }
+  
+  /* Poprawienie odległości w formularzach */
+  form, .form-container {
+    gap: 1rem !important;
+  }
+  
+  /* Poprawienie marginesów */
+  .mx-2 {
+    margin-left: 0.75rem !important;
+    margin-right: 0.75rem !important;
+  }
+  
+  /* Mniejsze marginesy wewnętrzne przy dużej czcionce */
+  .px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+/* Logo styling */
+.logo-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Special styling for accent in logo */
+.logo-text span {
+  color: #2563eb;
+  font-style: italic;
+}
+
+:root {
+      --background: 0 0% 100%;
+--foreground: 20 14.3% 4.1%;
+--muted: 60 4.8% 95.9%;
+--muted-foreground: 25 5.3% 44.7%;
+--popover: 0 0% 100%;
+--popover-foreground: 20 14.3% 4.1%;
+--card: 0 0% 100%;
+--card-foreground: 20 14.3% 4.1%;
+--border: 20 5.9% 90%;
+--input: 20 5.9% 90%;
+--primary: 207 90% 54%;
+--primary-foreground: 211 100% 99%;
+--secondary: 60 4.8% 95.9%;
+--secondary-foreground: 24 9.8% 10%;
+--accent: 60 4.8% 95.9%;
+--accent-foreground: 24 9.8% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 60 9.1% 97.8%;
+--ring: 20 14.3% 4.1%;
+--radius: 0.5rem;
+  }
+  .dark {
+      --background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--primary: 207 90% 54%;
+--primary-foreground: 211 100% 99%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--ring: 240 4.9% 83.9%;
+--radius: 0.5rem;
+  }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  /* Dark mode adjustments */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  .dark body {
+    background-color: #1a1b26;
+    color: #f8f8f2;
+  }
+  
+  .dark header {
+    background-color: #1a1b26;
+    border-bottom: 1px solid #2d2d3a;
+  }
+  
+  .dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Additional dark mode styles */
+  .dark .bg-white,
+  .dark .bg-background,
+  .dark div[class*="bg-white"] {
+    background-color: #1a1b26 !important;
+  }
+  
+  .dark .text-gray-600 {
+    color: #a9adc1 !important;
+  }
+  
+  .dark .text-gray-800 {
+    color: #f8f8f2 !important;
+  }
+  
+  .dark .text-gray-500 {
+    color: #a9adc1 !important;
+  }
+  
+  .dark .bg-gray-50 {
+    background-color: #2d2d3a !important;
+  }
+  
+  .dark .bg-gray-100 {
+    background-color: #252636 !important;
+  }
+  
+  .dark .card,
+  .dark .bg-card {
+    background-color: #1e2030 !important;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Animacja polskiej flagi - delikatniejsza */
+@keyframes wave-flag {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(1deg);
+  }
+}
+
+.polish-flag-animation {
+  animation: wave-flag 15s ease-in-out infinite;
+  transform-origin: left center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo - prosta, czytelna stylizacja */
+.logo-text {
+  position: relative;
+  font-weight: bold;
+  display: inline-block;
+  color: #d81e47;
+  margin-left: 0;
+}
+
+/* Domek w kolorze biało-czerwonym */
+.polish-icon {
+  stroke: var(--polish-red) !important;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+/* Animacje najechania na kategorie w ciemnym motywie */
+.dark .category-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.dark .category-card:hover {
+  background-color: hsl(var(--primary)) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.dark .category-card:hover .category-name {
+  color: white !important;
+}
+
+.dark .category-card:hover svg {
+  stroke: white !important;
+}
+
+/* Uproszczony interfejs */
+html.simplified-ui .card,
+html.simplified-ui .bg-gray-50,
+html.simplified-ui .bg-gray-100,
+html.simplified-ui .bg-white,
+html.simplified-ui .shadow-sm,
+html.simplified-ui .shadow-md,
+html.simplified-ui .shadow-lg {
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  border: 2px solid #4F5458 !important;
+  margin: 4px !important;
+}
+
+html.simplified-ui button,
+html.simplified-ui a[role="button"],
+html.simplified-ui input[type="submit"] {
+  border-radius: 8px !important;
+  border: 2px solid #3b82f6 !important;
+  font-weight: bold !important;
+  padding: 0.75rem 1.25rem !important;
+  margin: 4px !important;
+  font-size: 1.1rem !important;
+}
+
+html.simplified-ui select,
+html.simplified-ui input {
+  border-radius: 8px !important;
+  border: 2px solid #3b82f6 !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 1.1rem !important;
+  margin: 4px !important;
+  min-height: 3rem !important;
+}
+
+/* Redukcja animacji */
+html.reduced-motion *,
+html.reduced-motion *::before,
+html.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.reduced-motion .animate-blob {
+  animation: none !important;
+  transform: translate(0, 0) scale(1) !important;
+}
+
+/* Przycisk dostępności - zawsze widoczny */
+.accessibility-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.accessibility-button:hover {
+  transform: scale(1.1);
+}
+
+/* Responsywne czcionki dla trybu ułatwień dostępu */
+@media (max-width: 640px) {
+  html.simplified-ui {
+    font-size: 18px;
+  }
+  
+  html.simplified-ui button,
+  html.simplified-ui a[role="button"],
+  html.simplified-ui input[type="submit"],
+  html.simplified-ui select,
+  html.simplified-ui input {
+    font-size: 1.1rem !important;
+    padding: 1rem !important;
+  }
+}

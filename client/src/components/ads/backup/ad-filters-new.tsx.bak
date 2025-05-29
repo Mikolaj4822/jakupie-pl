@@ -1,0 +1,2465 @@
+import { useState, useEffect } from "react";
+import { Category } from "@shared/schema";
+import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/hooks/use-language";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  ChevronDown,
+  Sliders,
+  ArrowUpDown,
+  XCircle,
+  MapPin,
+  Calendar,
+  Tag,
+  Truck,
+  User,
+  Car,
+  Home,
+  Smartphone,
+  ShoppingBag,
+  Tractor,
+  Tv,
+  Laptop,
+  Headphones,
+  Camera,
+  Gamepad,
+  Shirt,
+  ShoppingCart,
+  Sofa,
+  Flower,
+  Hammer,
+  Wrench,
+  Briefcase,
+  GraduationCap,
+  Baby,
+  Dog,
+  Music,
+  Book,
+  Dumbbell,
+  Bike,
+  Mountain,
+  UtensilsCrossed,
+  Building,
+  Bed,
+  Box,
+  LayoutGrid,
+  ArrowUp,
+  Layers,
+  Maximize2,
+  LayoutList,
+  List,
+  Bookmark,
+  Activity
+} from "lucide-react";
+import { getFiltersForCategory } from "@/lib/category-filters";
+
+export interface FilterOptions {
+  category: number | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  location: string | null;
+  datePosted: string | null;
+  sortBy: string;
+  condition?: string;
+  deliveryOptions?: string[];
+  sellerType?: string;
+  categorySpecificFilters?: Record<string, any>;
+}
+
+interface AdFiltersProps {
+  categories: Category[];
+  selectedCategory: number | null;
+  onCategoryChange: (categoryId: number | null) => void;
+  onFilterChange?: (filters: FilterOptions) => void;
+  onSortChange?: (sortOption: string) => void;
+  currentFilters?: FilterOptions;
+}
+
+export default function AdFilters({
+  categories,
+  selectedCategory,
+  onCategoryChange,
+  onFilterChange,
+  onSortChange,
+  currentFilters = {
+    category: null,
+    minPrice: null,
+    maxPrice: null,
+    location: null,
+    datePosted: null,
+    sortBy: "newest"
+  }
+}: AdFiltersProps) {
+  const { t } = useLanguage();
+  const [isAdvancedFiltersOpen, setIsAdvancedFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>(currentFilters);
+  const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([
+    filters.minPrice || 0, 
+    filters.maxPrice || 10000
+  ]);
+  const [selectedCategoryName, setSelectedCategoryName] = useState<string | null>(null);
+  const [categorySpecificSchema, setCategorySpecificSchema] = useState<any>(null);
+  
+  // Determine category name when category changes
+  useEffect(() => {
+    if (selectedCategory === null) {
+      setSelectedCategoryName(null);
+      setCategorySpecificSchema(null);
+      return;
+    }
+    
+    const category = categories.find(cat => cat.id === selectedCategory);
+    if (category) {
+      setSelectedCategoryName(category.name);
+      const schema = getFiltersForCategory(category.name);
+      setCategorySpecificSchema(schema);
+    }
+  }, [selectedCategory, categories]);
+  
+  // Funkcje pomocnicze do generowania elementów filtrów
+  const getFilterCategoryItems = (categoryName: string) => {
+    try {
+      const schema = getFiltersForCategory(categoryName);
+      if (!schema || !schema.shape || !schema.shape.category) return null;
+      
+      // Próbujemy uzyskać dostęp do opcji Enum
+      const categoryEnum = schema.shape.category as any;
+      if (!categoryEnum.options) return null;
+      
+      return categoryEnum.options.map((option: string) => (
+        <SelectItem key={option} value={option}>
+          {translateFilterValue('category', option)}
+        </SelectItem>
+      ));
+    } catch (error) {
+      console.error("Error generating category items:", error);
+      return null;
+    }
+  };
+  
+  const getFilterBrandItems = (categoryName: string) => {
+    try {
+      const schema = getFiltersForCategory(categoryName);
+      if (!schema || !schema.shape || !schema.shape.brand) return null;
+      
+      // Próbujemy uzyskać dostęp do opcji Enum
+      const brandEnum = schema.shape.brand as any;
+      if (!brandEnum.options) return null;
+      
+      return brandEnum.options.map((option: string) => (
+        <SelectItem key={option} value={option}>
+          {translateFilterValue('brand', option)}
+        </SelectItem>
+      ));
+    } catch (error) {
+      console.error("Error generating brand items:", error);
+      return null;
+    }
+  };
+  
+  const getFilterConditionItems = (categoryName: string) => {
+    try {
+      const schema = getFiltersForCategory(categoryName);
+      if (!schema || !schema.shape || !schema.shape.condition) return null;
+      
+      // Próbujemy uzyskać dostęp do opcji Enum
+      const conditionEnum = schema.shape.condition as any;
+      if (!conditionEnum.options) return null;
+      
+      return conditionEnum.options.map((option: string) => (
+        <SelectItem key={option} value={option}>
+          {translateFilterValue('condition', option)}
+        </SelectItem>
+      ));
+    } catch (error) {
+      console.error("Error generating condition items:", error);
+      return null;
+    }
+  };
+  
+  // Funkcja pomocnicza do tłumaczenia wartości filtrów
+  const translateFilterValue = (filterType: string, value: string) => {
+    const key = `filters.${filterType}.${value}`;
+    const translation = t(key);
+    
+    // Jeśli nie znaleziono tłumaczenia, zwracamy sformatowaną wartość
+    if (translation === key) {
+      return value.split('_').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+    }
+    
+    return translation;
+  };
+  
+  // Get color based on category
+  const getCategoryColor = (color: string = "indigo", selected: boolean = false) => {
+    const colors: Record<string, { bg: string; text: string }> = {
+      indigo: { bg: selected ? "bg-indigo-500" : "bg-indigo-100", text: selected ? "text-white" : "text-indigo-800" },
+      blue: { bg: selected ? "bg-blue-500" : "bg-blue-100", text: selected ? "text-white" : "text-blue-800" },
+      green: { bg: selected ? "bg-green-500" : "bg-green-100", text: selected ? "text-white" : "text-green-800" },
+      yellow: { bg: selected ? "bg-yellow-500" : "bg-yellow-100", text: selected ? "text-white" : "text-yellow-800" },
+      red: { bg: selected ? "bg-red-500" : "bg-red-100", text: selected ? "text-white" : "text-red-800" },
+      purple: { bg: selected ? "bg-purple-500" : "bg-purple-100", text: selected ? "text-white" : "text-purple-800" },
+    };
+    
+    const colorObj = colors[color] || colors.indigo;
+    return `${colorObj.bg} ${colorObj.text}`;
+  };
+
+  const handleFilterChange = (key: keyof FilterOptions, value: any) => {
+    let newFilters = { ...filters, [key]: value };
+    
+    // Jeśli zmieniono kategorię, resetuj wszystkie specyficzne filtry
+    if (key === 'category') {
+      newFilters = {
+        ...newFilters,
+        categorySpecificFilters: {} // Resetuj wszystkie specyficzne filtry
+      };
+      onCategoryChange(value);
+    }
+    
+    setFilters(newFilters);
+    
+    if (onFilterChange) {
+      onFilterChange(newFilters);
+    }
+  };
+  
+  // Osobna funkcja do obsługi kategorii specyficznych filtrów
+  // bez wpływania na kategorię
+  const handleCategorySpecificFilterChange = (fieldName: string, value: any) => {
+    let updatedCategoryFilters = { 
+      ...filters.categorySpecificFilters,
+      [fieldName]: value 
+    };
+    
+    // Jeśli zmieniono vehicleType, resetuj inne powiązane filtry specyficzne dla pojazdów
+    if (fieldName === 'vehicleType') {
+      // Resetujemy powiązane filtry przy zmianie typu pojazdu
+      updatedCategoryFilters = {
+        ...updatedCategoryFilters,
+        carBrand: null,
+        yearFrom: null,
+        yearTo: null,
+        mileageMin: null,
+        mileageMax: null,
+        fuelType: null
+      };
+    }
+    
+    const newFilters = {
+      ...filters,
+      categorySpecificFilters: updatedCategoryFilters
+    };
+    
+    setFilters(newFilters);
+    
+    if (onFilterChange) {
+      onFilterChange(newFilters);
+    }
+  };
+
+  const handleSortChange = (value: string) => {
+    if (onSortChange) {
+      onSortChange(value);
+    }
+    setFilters({ ...filters, sortBy: value });
+  };
+
+  const handlePriceRangeChange = (values: number[]) => {
+    setTempPriceRange([values[0], values[1]]);
+  };
+
+  const applyPriceRange = () => {
+    handleFilterChange('minPrice', tempPriceRange[0]);
+    handleFilterChange('maxPrice', tempPriceRange[1]);
+  };
+
+  const clearAllFilters = () => {
+    const defaultFilters = {
+      category: null,
+      minPrice: null,
+      maxPrice: null,
+      location: null,
+      datePosted: null,
+      sortBy: "newest",
+      categorySpecificFilters: {} // Resetuj również specyficzne filtry
+    };
+    
+    setFilters(defaultFilters);
+    setTempPriceRange([0, 10000]);
+    onCategoryChange(null);
+    
+    if (onFilterChange) {
+      onFilterChange(defaultFilters);
+    }
+    
+    if (onSortChange) {
+      onSortChange("newest");
+    }
+  };
+
+  const isAnyFilterApplied = () => {
+    return (
+      filters.category !== null ||
+      filters.minPrice !== null ||
+      filters.maxPrice !== null ||
+      filters.location !== null ||
+      filters.datePosted !== null ||
+      filters.condition !== undefined ||
+      (filters.deliveryOptions && filters.deliveryOptions.length > 0) ||
+      filters.sellerType !== undefined ||
+      (filters.categorySpecificFilters && Object.keys(filters.categorySpecificFilters).length > 0) ||
+      filters.sortBy !== "newest"
+    );
+  };
+
+  return (
+    <div className="space-y-4 w-full">
+      {/* Categories as badges */}
+      <div className="flex flex-wrap gap-2">
+        <Badge
+          variant="outline"
+          className={`cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+            selectedCategory === null ? "bg-gray-200 dark:bg-gray-600 dark:text-white" : "dark:bg-gray-800 dark:text-gray-200"
+          }`}
+          onClick={() => onCategoryChange(null)}
+        >
+          {t("browse.allCategories")}
+        </Badge>
+        
+        {categories.map((category) => {
+          // Get translation for category name
+          const categoryKey = `categories.${category.name.toLowerCase()}`;
+          const categoryName = t(categoryKey) === categoryKey ? category.name : t(categoryKey);
+          
+          return (
+            <Badge
+              key={category.id}
+              className={`cursor-pointer ${getCategoryColor(
+                category.color,
+                selectedCategory === category.id
+              )}`}
+              onClick={() => onCategoryChange(category.id === selectedCategory ? null : category.id)}
+            >
+              {categoryName}
+            </Badge>
+          );
+        })}
+      </div>
+
+      {/* Filters and Sort Controls */}
+      <div className="flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="gap-2 dark:text-gray-300 dark:border-gray-600"
+            onClick={() => setIsAdvancedFiltersOpen(!isAdvancedFiltersOpen)}
+          >
+            <Sliders size={16} />
+            {t("browse.filters")}
+            <ChevronDown size={16} className={`transition-transform ${isAdvancedFiltersOpen ? 'rotate-180' : ''}`} />
+          </Button>
+          
+          {isAnyFilterApplied() && (
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 gap-1"
+              onClick={clearAllFilters}
+            >
+              <XCircle size={14} />
+              {t("browse.clearFilters")}
+            </Button>
+          )}
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <ArrowUpDown size={16} className="text-gray-500 dark:text-gray-400" />
+          <Select
+            value={filters.sortBy}
+            onValueChange={handleSortChange}
+          >
+            <SelectTrigger className="h-9 w-[180px] dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+              <SelectValue placeholder={t("browse.sort")} />
+            </SelectTrigger>
+            <SelectContent className="dark:bg-gray-800 dark:border-gray-700">
+              <SelectItem value="newest" className="dark:text-gray-200">{t("browse.sort.newest")}</SelectItem>
+              <SelectItem value="oldest" className="dark:text-gray-200">{t("browse.sort.oldest")}</SelectItem>
+              <SelectItem value="priceAsc" className="dark:text-gray-200">{t("browse.sort.priceAsc")}</SelectItem>
+              <SelectItem value="priceDesc" className="dark:text-gray-200">{t("browse.sort.priceDesc")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* Advanced Filters */}
+      {isAdvancedFiltersOpen && (
+        <div className="p-2 bg-gray-50 dark:bg-gray-900 rounded-lg w-full">
+          {/* Dla wersji mobilnej używamy układu flexbox z kierunkiem kolumnowym */}
+          <div className="flex flex-col md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+            
+            {/* First column - Basic filters */}
+            <div>
+              {/* Price Range Filter */}
+              <FilterSection title="Przedział cenowy" icon={<Tag size={16} />}>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">zł {tempPriceRange[0]}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">zł {tempPriceRange[1]}</span>
+                  </div>
+                  <Slider
+                    value={tempPriceRange}
+                    min={0}
+                    max={10000}
+                    step={100}
+                    onValueChange={handlePriceRangeChange}
+                    className="py-4"
+                  />
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <div className="relative">
+                        <span className="absolute left-3 top-2.5 text-gray-500 dark:text-gray-400">zł</span>
+                        <Input 
+                          id="minPrice"
+                          type="number" 
+                          value={tempPriceRange[0]}
+                          onChange={(e) => setTempPriceRange([Number(e.target.value), tempPriceRange[1]])}
+                          className="pl-7 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          placeholder="od"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="relative">
+                        <span className="absolute left-3 top-2.5 text-gray-500 dark:text-gray-400">zł</span>
+                        <Input 
+                          id="maxPrice"
+                          type="number" 
+                          value={tempPriceRange[1]}
+                          onChange={(e) => setTempPriceRange([tempPriceRange[0], Number(e.target.value)])}
+                          className="pl-7 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          placeholder="do"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Button size="sm" onClick={applyPriceRange} className="w-full">
+                    Pokaż ogłoszenia
+                  </Button>
+                </div>
+              </FilterSection>
+              
+              {/* Location Filter */}
+              <FilterSection title="Lokalizacja" icon={<MapPin size={16} />}>
+                <div className="space-y-4">
+                  <div className="relative">
+                    <MapPin size={16} className="absolute left-3 top-3 text-gray-500 dark:text-gray-400" />
+                    <Input 
+                      placeholder="np. Warszawa, Kraków, cała Polska" 
+                      value={filters.location || ''}
+                      onChange={(e) => handleFilterChange('location', e.target.value || null)}
+                      className="pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                    />
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {["Cała Polska", "Warszawa", "Kraków", "Łódź", "Wrocław", "Poznań", "Gdańsk"].map(city => (
+                      <Badge 
+                        key={city}
+                        variant="outline" 
+                        className="cursor-pointer hover:bg-primary-50 hover:text-primary-600"
+                        onClick={() => handleFilterChange('location', city)}
+                      >
+                        {city}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </FilterSection>
+            </div>
+            
+            {/* Second column - More filters */}
+            <div>
+              {/* Data publikacji */}
+              <FilterSection title="Data publikacji" icon={<Calendar size={16} />}>
+                <RadioGroup
+                  value={filters.datePosted || "all"}
+                  onValueChange={(value) => handleFilterChange('datePosted', value === 'all' ? null : value)}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="all" id="date-all" />
+                    <Label htmlFor="date-all">Wszystkie</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="today" id="date-today" />
+                    <Label htmlFor="date-today">Dzisiaj</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yesterday" id="date-yesterday" />
+                    <Label htmlFor="date-yesterday">Wczoraj</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="lastWeek" id="date-lastWeek" />
+                    <Label htmlFor="date-lastWeek">Ostatnie 7 dni</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="lastMonth" id="date-lastMonth" />
+                    <Label htmlFor="date-lastMonth">Ostatnie 30 dni</Label>
+                  </div>
+                </RadioGroup>
+              </FilterSection>
+              
+              {/* Stan */}
+              <FilterSection title="Stan" icon={<Tag size={16} />}>
+                <RadioGroup
+                  value={filters.condition || "all"}
+                  onValueChange={(value) => handleFilterChange('condition', value === 'all' ? null : value)}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="all" id="condition-all" />
+                    <Label htmlFor="condition-all">Wszystkie</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="new" id="condition-new" />
+                    <Label htmlFor="condition-new">Nowy</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="used" id="condition-used" />
+                    <Label htmlFor="condition-used">Używany</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="damaged" id="condition-damaged" />
+                    <Label htmlFor="condition-damaged">Uszkodzony</Label>
+                  </div>
+                </RadioGroup>
+              </FilterSection>
+            </div>
+            
+            {/* Third column - Delivery and seller type */}
+            <div>
+              {/* Opcje dostawy */}
+              <FilterSection title="Opcje dostawy" icon={<Truck size={16} />}>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="delivery-courier" 
+                      checked={filters.deliveryOptions?.includes('courier')}
+                      onCheckedChange={(checked) => {
+                        const current = filters.deliveryOptions || [];
+                        const updated = checked 
+                          ? [...current, 'courier'] 
+                          : current.filter(option => option !== 'courier');
+                        handleFilterChange('deliveryOptions', updated);
+                      }} 
+                    />
+                    <Label htmlFor="delivery-courier">Przesyłka kurierska</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="delivery-inpost" 
+                      checked={filters.deliveryOptions?.includes('inpost')}
+                      onCheckedChange={(checked) => {
+                        const current = filters.deliveryOptions || [];
+                        const updated = checked 
+                          ? [...current, 'inpost'] 
+                          : current.filter(option => option !== 'inpost');
+                        handleFilterChange('deliveryOptions', updated);
+                      }} 
+                    />
+                    <Label htmlFor="delivery-inpost">InPost Paczkomaty</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="delivery-personal" 
+                      checked={filters.deliveryOptions?.includes('personal')}
+                      onCheckedChange={(checked) => {
+                        const current = filters.deliveryOptions || [];
+                        const updated = checked 
+                          ? [...current, 'personal'] 
+                          : current.filter(option => option !== 'personal');
+                        handleFilterChange('deliveryOptions', updated);
+                      }} 
+                    />
+                    <Label htmlFor="delivery-personal">Odbiór osobisty</Label>
+                  </div>
+                </div>
+              </FilterSection>
+              
+              {/* Typ sprzedającego */}
+              <FilterSection title="Typ sprzedającego" icon={<User size={16} />}>
+                <RadioGroup
+                  value={filters.sellerType || "all"}
+                  onValueChange={(value) => handleFilterChange('sellerType', value === 'all' ? null : value)}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="all" id="seller-all" />
+                    <Label htmlFor="seller-all">Wszyscy</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="private" id="seller-private" />
+                    <Label htmlFor="seller-private">Osoba prywatna</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="business" id="seller-business" />
+                    <Label htmlFor="seller-business">Firma</Label>
+                  </div>
+                </RadioGroup>
+              </FilterSection>
+            </div>
+            
+          </div>
+          
+          {/* Category-specific filters */}
+          {selectedCategoryName && (
+            <div className="mt-4 p-2">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
+                Filtry specyficzne dla kategorii {selectedCategoryName}
+              </h3>
+              <div className="flex flex-col md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                {/* Renderowanie filtrów specyficznych dla danej kategorii */}
+                {/* Każda kategoria ma swój własny zestaw filtrów dopasowanych do jej potrzeb */}
+                
+                {/* Generyczne filtry dla kategorii bez dedykowanych filtrów */}
+                {!["Rolnictwo", "Motoryzacja", "Elektronika", "Nieruchomości", "Dom i Ogród", "Zwierzęta", "Moda"].includes(selectedCategoryName) && (
+                  <FilterSection title="Typy i kategorie" icon={<List size={16} />}>
+                    <div className="space-y-2">
+                      <Select
+                        value={filters.categorySpecificFilters?.category || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('category', value === "all" ? null : value);
+                        }}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Wybierz typ" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Wszystkie</SelectItem>
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Zwierzęta */}
+                        {selectedCategoryName === "Zwierzęta" && (
+                          <>
+                            <SelectItem value="dogs">Psy</SelectItem>
+                            <SelectItem value="cats">Koty</SelectItem>
+                            <SelectItem value="birds">Ptaki</SelectItem>
+                            <SelectItem value="fish">Ryby</SelectItem>
+                            <SelectItem value="reptiles">Gady</SelectItem>
+                            <SelectItem value="small_mammals">Małe ssaki</SelectItem>
+                            <SelectItem value="farm_animals">Zwierzęta hodowlane</SelectItem>
+                            <SelectItem value="pet_food">Karma</SelectItem>
+                            <SelectItem value="accessories">Akcesoria</SelectItem>
+                            <SelectItem value="toys">Zabawki</SelectItem>
+                            <SelectItem value="cages">Klatki</SelectItem>
+                            <SelectItem value="aquariums">Akwaria</SelectItem>
+                            <SelectItem value="terrariums">Terraria</SelectItem>
+                            <SelectItem value="health_care">Opieka zdrowotna</SelectItem>
+                            <SelectItem value="grooming">Pielęgnacja</SelectItem>
+                            <SelectItem value="training">Szkolenie</SelectItem>
+                            <SelectItem value="transportation">Transport</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Antyki i Kolekcje */}
+                        {selectedCategoryName === "Antyki i Kolekcje" && (
+                          <>
+                            <SelectItem value="antiques">Antyki</SelectItem>
+                            <SelectItem value="art">Sztuka</SelectItem>
+                            <SelectItem value="coins">Monety</SelectItem>
+                            <SelectItem value="stamps">Znaczki</SelectItem>
+                            <SelectItem value="postcards">Pocztówki</SelectItem>
+                            <SelectItem value="books">Książki</SelectItem>
+                            <SelectItem value="comics">Komiksy</SelectItem>
+                            <SelectItem value="records">Płyty</SelectItem>
+                            <SelectItem value="figurines">Figurki</SelectItem>
+                            <SelectItem value="military">Militaria</SelectItem>
+                            <SelectItem value="models">Modele</SelectItem>
+                            <SelectItem value="posters">Plakaty</SelectItem>
+                            <SelectItem value="memorabilia">Pamiątki</SelectItem>
+                            <SelectItem value="retro_gadgets">Retro gadżety</SelectItem>
+                            <SelectItem value="vintage_electronics">Elektronika vintage</SelectItem>
+                            <SelectItem value="trading_cards">Karty kolekcjonerskie</SelectItem>
+                            <SelectItem value="vinyl_records">Płyty winylowe</SelectItem>
+                            <SelectItem value="photography">Fotografia</SelectItem>
+                            <SelectItem value="watches">Zegarki</SelectItem>
+                            <SelectItem value="jewelry">Biżuteria</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Nieruchomości */}
+                        {selectedCategoryName === "Nieruchomości" && (
+                          <>
+                            <SelectItem value="apartment">Mieszkania</SelectItem>
+                            <SelectItem value="house">Domy</SelectItem>
+                            <SelectItem value="land">Działki</SelectItem>
+                            <SelectItem value="commercial">Lokale użytkowe</SelectItem>
+                            <SelectItem value="garage">Garaże i parkingi</SelectItem>
+                            <SelectItem value="room">Pokoje</SelectItem>
+                            <SelectItem value="office">Biura</SelectItem>
+                            <SelectItem value="hall">Hale i magazyny</SelectItem>
+                            <SelectItem value="vacation">Nieruchomości wakacyjne</SelectItem>
+                            <SelectItem value="investment">Inwestycje</SelectItem>
+                            <SelectItem value="agricultural">Grunty rolne</SelectItem>
+                            <SelectItem value="building">Budynki</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Elektronika */}
+                        {selectedCategoryName === "Elektronika" && (
+                          <>
+                            <SelectItem value="smartphones">Smartfony</SelectItem>
+                            <SelectItem value="computers">Komputery</SelectItem>
+                            <SelectItem value="laptops">Laptopy</SelectItem>
+                            <SelectItem value="tablets">Tablety</SelectItem>
+                            <SelectItem value="monitors">Monitory</SelectItem>
+                            <SelectItem value="tv">Telewizory</SelectItem>
+                            <SelectItem value="audio">Sprzęt audio</SelectItem>
+                            <SelectItem value="cameras">Aparaty</SelectItem>
+                            <SelectItem value="accessories">Akcesoria</SelectItem>
+                            <SelectItem value="gaming">Konsole i gry</SelectItem>
+                            <SelectItem value="smart_home">Smart home</SelectItem>
+                            <SelectItem value="network">Sieć i internet</SelectItem>
+                            <SelectItem value="office_equipment">Sprzęt biurowy</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Motoryzacja */}
+                        {selectedCategoryName === "Motoryzacja" && (
+                          <>
+                            <SelectItem value="cars">Samochody osobowe</SelectItem>
+                            <SelectItem value="motorcycles">Motocykle</SelectItem>
+                            <SelectItem value="trucks">Samochody dostawcze</SelectItem>
+                            <SelectItem value="parts">Części samochodowe</SelectItem>
+                            <SelectItem value="accessories">Akcesoria</SelectItem>
+                            <SelectItem value="wheels">Felgi i opony</SelectItem>
+                            <SelectItem value="agricultural">Maszyny rolnicze</SelectItem>
+                            <SelectItem value="construction">Maszyny budowlane</SelectItem>
+                            <SelectItem value="other_vehicles">Inne pojazdy</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla kategorii Rolnictwo */}
+                        {selectedCategoryName === "Rolnictwo" && (
+                          <>
+                            <SelectItem value="tractors">Traktory</SelectItem>
+                            <SelectItem value="combines">Kombajny</SelectItem>
+                            <SelectItem value="seeders">Siewniki</SelectItem>
+                            <SelectItem value="plows">Pługi</SelectItem>
+                            <SelectItem value="harvesters">Żniwiarki</SelectItem>
+                            <SelectItem value="sprayers">Opryskiwacze</SelectItem>
+                            <SelectItem value="livestock">Hodowla zwierząt</SelectItem>
+                            <SelectItem value="accessories">Akcesoria rolnicze</SelectItem>
+                            <SelectItem value="parts">Części zamienne</SelectItem>
+                            <SelectItem value="tools">Narzędzia</SelectItem>
+                            <SelectItem value="irrigation">Systemy nawadniania</SelectItem>
+                            <SelectItem value="other">Inne</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ręcznie dodane opcje dla innych kategorii */}
+                        {/* Można dodać więcej według potrzeb */}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </FilterSection>
+                {selectedCategoryName === "Zwierzęta" && (
+                  <FilterSection title="Rodzaj zwierzęcia" icon={<Dog size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.animalType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('animalType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz rodzaj" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="dogs_small">Psy małe</SelectItem>
+                        <SelectItem value="dogs_medium">Psy średnie</SelectItem>
+                        <SelectItem value="dogs_large">Psy duże</SelectItem>
+                        <SelectItem value="dogs_puppies">Szczenięta</SelectItem>
+                        <SelectItem value="cats_kittens">Kocięta</SelectItem>
+                        <SelectItem value="cats_adult">Koty dorosłe</SelectItem>
+                        <SelectItem value="canaries">Kanarki</SelectItem>
+                        <SelectItem value="parrots">Papugi</SelectItem>
+                        <SelectItem value="budgerigars">Papużki faliste</SelectItem>
+                        <SelectItem value="finches">Zięby</SelectItem>
+                        <SelectItem value="hamsters">Chomiki</SelectItem>
+                        <SelectItem value="guinea_pigs">Świnki morskie</SelectItem>
+                        <SelectItem value="rabbits">Króliki</SelectItem>
+                        <SelectItem value="tropical_fish">Ryby tropikalne</SelectItem>
+                        <SelectItem value="cold_water_fish">Ryby zimnowodne</SelectItem>
+                        <SelectItem value="turtles">Żółwie</SelectItem>
+                        <SelectItem value="snakes">Węże</SelectItem>
+                        <SelectItem value="lizards">Jaszczurki</SelectItem>
+                        <SelectItem value="horses">Konie</SelectItem>
+                        <SelectItem value="other_pets">Inne zwierzęta</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtr wieku dla Zwierząt */}
+                {selectedCategoryName === "Zwierzęta" && (
+                  <FilterSection title="Wiek" icon={<Calendar size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.age || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('age', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz wiek" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="puppy">Szczenię/Młode</SelectItem>
+                        <SelectItem value="junior">Junior</SelectItem>
+                        <SelectItem value="adult">Dorosły</SelectItem>
+                        <SelectItem value="senior">Senior</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Nieruchomości - Typ nieruchomości */}
+                {selectedCategoryName === "Nieruchomości" && (
+                  <FilterSection title="Typ nieruchomości" icon={<Home size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.propertyType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('propertyType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz typ" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="apartment">Mieszkanie</SelectItem>
+                        <SelectItem value="house">Dom</SelectItem>
+                        <SelectItem value="land">Działka</SelectItem>
+                        <SelectItem value="commercial">Lokal użytkowy</SelectItem>
+                        <SelectItem value="garage">Garaż/parking</SelectItem>
+                        <SelectItem value="room">Pokój</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Nieruchomości - Powierzchnia */}
+                {selectedCategoryName === "Nieruchomości" && (
+                  <FilterSection title="Powierzchnia (m²)" icon={<Maximize2 size={16} />}>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">min</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">max</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="od"
+                            value={filters.categorySpecificFilters?.areaMin || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('areaMin', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="do"
+                            value={filters.categorySpecificFilters?.areaMax || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('areaMax', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Nieruchomości - Liczba pokoi */}
+                {selectedCategoryName === "Nieruchomości" && (
+                  <FilterSection title="Liczba pokoi" icon={<LayoutGrid size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.rooms || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('rooms', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz liczbę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5+">5 i więcej</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Rolnictwo - Typ sprzętu */}
+                {selectedCategoryName === "Rolnictwo" && (
+                  <FilterSection title="Typ sprzętu" icon={<Tractor size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.equipmentType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('equipmentType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz typ" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="tractors">Traktory</SelectItem>
+                        <SelectItem value="combines">Kombajny</SelectItem>
+                        <SelectItem value="seeders">Siewniki</SelectItem>
+                        <SelectItem value="plows">Pługi</SelectItem>
+                        <SelectItem value="harvesters">Żniwiarki</SelectItem>
+                        <SelectItem value="sprayers">Opryskiwacze</SelectItem>
+                        <SelectItem value="balers">Prasy do bel</SelectItem>
+                        <SelectItem value="mowers">Kosiarki</SelectItem>
+                        <SelectItem value="loaders">Ładowarki</SelectItem>
+                        <SelectItem value="trailers">Przyczepy</SelectItem>
+                        <SelectItem value="parts">Części zamienne</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Rolnictwo - Marka maszyny */}
+                {selectedCategoryName === "Rolnictwo" && (
+                  <FilterSection title="Marka maszyny" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.agMachBrand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('agMachBrand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="ursus">Ursus</SelectItem>
+                        <SelectItem value="zetor">Zetor</SelectItem>
+                        <SelectItem value="john_deere">John Deere</SelectItem>
+                        <SelectItem value="case">Case</SelectItem>
+                        <SelectItem value="claas">Claas</SelectItem>
+                        <SelectItem value="new_holland">New Holland</SelectItem>
+                        <SelectItem value="massey_ferguson">Massey Ferguson</SelectItem>
+                        <SelectItem value="deutz_fahr">Deutz-Fahr</SelectItem>
+                        <SelectItem value="fendt">Fendt</SelectItem>
+                        <SelectItem value="kubota">Kubota</SelectItem>
+                        <SelectItem value="valtra">Valtra</SelectItem>
+                        <SelectItem value="pronar">Pronar</SelectItem>
+                        <SelectItem value="same">Same</SelectItem>
+                        <SelectItem value="lamborghini">Lamborghini</SelectItem>
+                        <SelectItem value="farmer">Farmer</SelectItem>
+                        <SelectItem value="unia">Unia</SelectItem>
+                        <SelectItem value="korbanek">Korbanek</SelectItem>
+                        <SelectItem value="agromet">Agromet</SelectItem>
+                        <SelectItem value="farmtrac">Farmtrac</SelectItem>
+                        <SelectItem value="fortschritt">Fortschritt</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Rolnictwo - Rok produkcji */}
+                {selectedCategoryName === "Rolnictwo" && (
+                  <FilterSection title="Rok produkcji" icon={<Calendar size={16} />}>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">od</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">do</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="1960"
+                            value={filters.categorySpecificFilters?.yearFrom || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('yearFrom', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="2024"
+                            value={filters.categorySpecificFilters?.yearTo || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('yearTo', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Motoryzacja - Marka pojazdu z dynamicznym wyborem podkategorii */}
+                {selectedCategoryName === "Motoryzacja" && (
+                  <FilterSection title="Marka pojazdu" icon={<Car size={16} />}>
+                    <div className="mb-4">
+                      <Select
+                        value={filters.categorySpecificFilters?.vehicleType || "cars"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('vehicleType', value);
+                        }}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Wybierz typ pojazdu" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cars">Samochody osobowe</SelectItem>
+                          <SelectItem value="motorcycles">Motocykle</SelectItem>
+                          <SelectItem value="trucks">Samochody dostawcze i ciężarowe</SelectItem>
+                          <SelectItem value="agricultural">Maszyny rolnicze</SelectItem>
+                          <SelectItem value="construction">Maszyny budowlane</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <Select
+                      value={filters.categorySpecificFilters?.carBrand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('carBrand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        
+                        {/* Samochody osobowe */}
+                        {filters.categorySpecificFilters?.vehicleType === "cars" && (
+                          <>
+                            <SelectItem value="alfa_romeo">Alfa Romeo</SelectItem>
+                            <SelectItem value="audi">Audi</SelectItem>
+                            <SelectItem value="bmw">BMW</SelectItem>
+                            <SelectItem value="chevrolet">Chevrolet</SelectItem>
+                            <SelectItem value="chrysler">Chrysler</SelectItem>
+                            <SelectItem value="citroen">Citroën</SelectItem>
+                            <SelectItem value="dacia">Dacia</SelectItem>
+                            <SelectItem value="dodge">Dodge</SelectItem>
+                            <SelectItem value="fiat">Fiat</SelectItem>
+                            <SelectItem value="ford">Ford</SelectItem>
+                            <SelectItem value="honda">Honda</SelectItem>
+                            <SelectItem value="hyundai">Hyundai</SelectItem>
+                            <SelectItem value="jaguar">Jaguar</SelectItem>
+                            <SelectItem value="jeep">Jeep</SelectItem>
+                            <SelectItem value="kia">Kia</SelectItem>
+                            <SelectItem value="land_rover">Land Rover</SelectItem>
+                            <SelectItem value="lexus">Lexus</SelectItem>
+                            <SelectItem value="mazda">Mazda</SelectItem>
+                            <SelectItem value="mercedes_benz">Mercedes-Benz</SelectItem>
+                            <SelectItem value="mini">MINI</SelectItem>
+                            <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+                            <SelectItem value="nissan">Nissan</SelectItem>
+                            <SelectItem value="opel">Opel</SelectItem>
+                            <SelectItem value="peugeot">Peugeot</SelectItem>
+                            <SelectItem value="porsche">Porsche</SelectItem>
+                            <SelectItem value="renault">Renault</SelectItem>
+                            <SelectItem value="saab">Saab</SelectItem>
+                            <SelectItem value="seat">SEAT</SelectItem>
+                            <SelectItem value="skoda">Škoda</SelectItem>
+                            <SelectItem value="smart">Smart</SelectItem>
+                            <SelectItem value="subaru">Subaru</SelectItem>
+                            <SelectItem value="suzuki">Suzuki</SelectItem>
+                            <SelectItem value="toyota">Toyota</SelectItem>
+                            <SelectItem value="volkswagen">Volkswagen</SelectItem>
+                            <SelectItem value="volvo">Volvo</SelectItem>
+                            <SelectItem value="aston_martin">Aston Martin</SelectItem>
+                            <SelectItem value="bentley">Bentley</SelectItem>
+                            <SelectItem value="bugatti">Bugatti</SelectItem>
+                            <SelectItem value="ferrari">Ferrari</SelectItem>
+                            <SelectItem value="lamborghini">Lamborghini</SelectItem>
+                            <SelectItem value="maserati">Maserati</SelectItem>
+                            <SelectItem value="rolls_royce">Rolls-Royce</SelectItem>
+                            <SelectItem value="tesla">Tesla</SelectItem>
+                            <SelectItem value="polonez">Polonez</SelectItem>
+                            <SelectItem value="fso">FSO</SelectItem>
+                            <SelectItem value="izera">Izera</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Motocykle */}
+                        {filters.categorySpecificFilters?.vehicleType === "motorcycles" && (
+                          <>
+                            <SelectItem value="aprilia">Aprilia</SelectItem>
+                            <SelectItem value="bmw_motorrad">BMW Motorrad</SelectItem>
+                            <SelectItem value="ducati">Ducati</SelectItem>
+                            <SelectItem value="harley_davidson">Harley-Davidson</SelectItem>
+                            <SelectItem value="honda_motorcycles">Honda</SelectItem>
+                            <SelectItem value="kawasaki">Kawasaki</SelectItem>
+                            <SelectItem value="ktm">KTM</SelectItem>
+                            <SelectItem value="kymco">Kymco</SelectItem>
+                            <SelectItem value="piaggio">Piaggio</SelectItem>
+                            <SelectItem value="suzuki_motorcycles">Suzuki</SelectItem>
+                            <SelectItem value="triumph">Triumph</SelectItem>
+                            <SelectItem value="vespa">Vespa</SelectItem>
+                            <SelectItem value="yamaha">Yamaha</SelectItem>
+                            <SelectItem value="romet">Romet</SelectItem>
+                            <SelectItem value="junak">Junak</SelectItem>
+                            <SelectItem value="indian">Indian</SelectItem>
+                            <SelectItem value="royal_enfield">Royal Enfield</SelectItem>
+                            <SelectItem value="bajaj">Bajaj</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Ciężarowe */}
+                        {filters.categorySpecificFilters?.vehicleType === "trucks" && (
+                          <>
+                            <SelectItem value="daf">DAF</SelectItem>
+                            <SelectItem value="iveco">Iveco</SelectItem>
+                            <SelectItem value="man">MAN</SelectItem>
+                            <SelectItem value="scania">Scania</SelectItem>
+                            <SelectItem value="volvo_trucks">Volvo Trucks</SelectItem>
+                            <SelectItem value="mercedes_trucks">Mercedes-Benz</SelectItem>
+                            <SelectItem value="renault_trucks">Renault Trucks</SelectItem>
+                            <SelectItem value="ford_trucks">Ford</SelectItem>
+                            <SelectItem value="fiat_trucks">Fiat</SelectItem>
+                            <SelectItem value="star">Star</SelectItem>
+                            <SelectItem value="jelcz">Jelcz</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Maszyny rolnicze */}
+                        {filters.categorySpecificFilters?.vehicleType === "agricultural" && (
+                          <>
+                            <SelectItem value="ursus">Ursus</SelectItem>
+                            <SelectItem value="zetor">Zetor</SelectItem>
+                            <SelectItem value="john_deere">John Deere</SelectItem>
+                            <SelectItem value="case">Case</SelectItem>
+                            <SelectItem value="claas">Claas</SelectItem>
+                            <SelectItem value="new_holland">New Holland</SelectItem>
+                            <SelectItem value="massey_ferguson">Massey Ferguson</SelectItem>
+                            <SelectItem value="deutz_fahr">Deutz-Fahr</SelectItem>
+                            <SelectItem value="fendt">Fendt</SelectItem>
+                            <SelectItem value="kubota">Kubota</SelectItem>
+                            <SelectItem value="valtra">Valtra</SelectItem>
+                            <SelectItem value="pronar">Pronar</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Maszyny budowlane */}
+                        {filters.categorySpecificFilters?.vehicleType === "construction" && (
+                          <>
+                            <SelectItem value="caterpillar">Caterpillar</SelectItem>
+                            <SelectItem value="komatsu">Komatsu</SelectItem>
+                            <SelectItem value="jcb">JCB</SelectItem>
+                            <SelectItem value="liebherr">Liebherr</SelectItem>
+                            <SelectItem value="volvo_construction">Volvo</SelectItem>
+                            <SelectItem value="hitachi">Hitachi</SelectItem>
+                            <SelectItem value="case_construction">Case</SelectItem>
+                            <SelectItem value="bobcat">Bobcat</SelectItem>
+                            <SelectItem value="manitou">Manitou</SelectItem>
+                            <SelectItem value="doosan">Doosan</SelectItem>
+                            <SelectItem value="mecalac">Mecalac</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Inne */}
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Motoryzacja - Rok produkcji */}
+                {selectedCategoryName === "Motoryzacja" && filters.categorySpecificFilters?.vehicleType && ![undefined, null].includes(filters.categorySpecificFilters?.vehicleType) && (
+                  <FilterSection title="Rok produkcji" icon={<Calendar size={16} />}>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">od</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">do</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="1990"
+                            value={filters.categorySpecificFilters?.yearFrom || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('yearFrom', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="2024"
+                            value={filters.categorySpecificFilters?.yearTo || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('yearTo', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Motoryzacja - Przebieg - tylko dla samochodów, motocykli i ciężarowych */}
+                {selectedCategoryName === "Motoryzacja" && filters.categorySpecificFilters?.vehicleType && ["cars", "motorcycles", "trucks"].includes(filters.categorySpecificFilters?.vehicleType) && (
+                  <FilterSection title="Przebieg (km)" icon={<Layers size={16} />}>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">min</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">max</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="od"
+                            value={filters.categorySpecificFilters?.mileageMin || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('mileageMin', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Input 
+                            type="number" 
+                            placeholder="do"
+                            value={filters.categorySpecificFilters?.mileageMax || ''}
+                            onChange={(e) => handleCategorySpecificFilterChange('mileageMax', e.target.value ? Number(e.target.value) : null)}
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Motoryzacja - Paliwo - tylko dla samochodów i ciężarowych */}
+                {selectedCategoryName === "Motoryzacja" && filters.categorySpecificFilters?.vehicleType && ["cars", "trucks"].includes(filters.categorySpecificFilters?.vehicleType) && (
+                  <FilterSection title="Rodzaj paliwa" icon={<Truck size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.fuelType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('fuelType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz rodzaj" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="petrol">Benzyna</SelectItem>
+                        <SelectItem value="diesel">Diesel</SelectItem>
+                        <SelectItem value="hybrid">Hybryda</SelectItem>
+                        <SelectItem value="electric">Elektryczny</SelectItem>
+                        <SelectItem value="lpg">LPG</SelectItem>
+                        <SelectItem value="hydrogen">Wodór</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Elektronika - Typ urządzenia */}
+                {selectedCategoryName === "Elektronika" && (
+                  <FilterSection title="Typ urządzenia" icon={<Smartphone size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.deviceType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('deviceType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz typ" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="smartphones">Smartfony</SelectItem>
+                        <SelectItem value="tablets">Tablety</SelectItem>
+                        <SelectItem value="laptops">Laptopy</SelectItem>
+                        <SelectItem value="desktops">Komputery stacjonarne</SelectItem>
+                        <SelectItem value="monitors">Monitory</SelectItem>
+                        <SelectItem value="tv">Telewizory</SelectItem>
+                        <SelectItem value="audio">Sprzęt audio</SelectItem>
+                        <SelectItem value="gaming">Konsole i gry</SelectItem>
+                        <SelectItem value="cameras">Aparaty i kamery</SelectItem>
+                        <SelectItem value="accessories">Akcesoria</SelectItem>
+                        <SelectItem value="smartwatches">Smartwatche</SelectItem>
+                        <SelectItem value="networking">Sprzęt sieciowy</SelectItem>
+                        <SelectItem value="homeappliances">Sprzęt AGD</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Elektronika - Marka */}
+                {selectedCategoryName === "Elektronika" && filters.categorySpecificFilters?.deviceType && (
+                  <FilterSection title="Marka" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.brand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        
+                        {/* Marki smartfonów i tabletów */}
+                        {["smartphones", "tablets"].includes(filters.categorySpecificFilters?.deviceType) && (
+                          <>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="xiaomi">Xiaomi</SelectItem>
+                            <SelectItem value="huawei">Huawei</SelectItem>
+                            <SelectItem value="oppo">OPPO</SelectItem>
+                            <SelectItem value="vivo">Vivo</SelectItem>
+                            <SelectItem value="realme">realme</SelectItem>
+                            <SelectItem value="oneplus">OnePlus</SelectItem>
+                            <SelectItem value="google">Google</SelectItem>
+                            <SelectItem value="motorola">Motorola</SelectItem>
+                            <SelectItem value="sony">Sony</SelectItem>
+                            <SelectItem value="htc">HTC</SelectItem>
+                            <SelectItem value="nokia">Nokia</SelectItem>
+                            <SelectItem value="lenovo">Lenovo</SelectItem>
+                            <SelectItem value="microsoft">Microsoft</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki laptopów i komputerów */}
+                        {["laptops", "desktops"].includes(filters.categorySpecificFilters?.deviceType) && (
+                          <>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="dell">Dell</SelectItem>
+                            <SelectItem value="hp">HP</SelectItem>
+                            <SelectItem value="lenovo">Lenovo</SelectItem>
+                            <SelectItem value="asus">ASUS</SelectItem>
+                            <SelectItem value="acer">Acer</SelectItem>
+                            <SelectItem value="msi">MSI</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="microsoft">Microsoft</SelectItem>
+                            <SelectItem value="huawei">Huawei</SelectItem>
+                            <SelectItem value="razer">Razer</SelectItem>
+                            <SelectItem value="fujitsu">Fujitsu</SelectItem>
+                            <SelectItem value="toshiba">Toshiba</SelectItem>
+                            <SelectItem value="gigabyte">Gigabyte</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki monitorów i TV */}
+                        {["monitors", "tv"].includes(filters.categorySpecificFilters?.deviceType) && (
+                          <>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="lg">LG</SelectItem>
+                            <SelectItem value="philips">Philips</SelectItem>
+                            <SelectItem value="sony">Sony</SelectItem>
+                            <SelectItem value="dell">Dell</SelectItem>
+                            <SelectItem value="asus">ASUS</SelectItem>
+                            <SelectItem value="acer">Acer</SelectItem>
+                            <SelectItem value="benq">BenQ</SelectItem>
+                            <SelectItem value="msi">MSI</SelectItem>
+                            <SelectItem value="aoc">AOC</SelectItem>
+                            <SelectItem value="panasonic">Panasonic</SelectItem>
+                            <SelectItem value="sharp">Sharp</SelectItem>
+                            <SelectItem value="toshiba">Toshiba</SelectItem>
+                            <SelectItem value="hisense">Hisense</SelectItem>
+                            <SelectItem value="tcl">TCL</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki audio */}
+                        {filters.categorySpecificFilters?.deviceType === "audio" && (
+                          <>
+                            <SelectItem value="sony">Sony</SelectItem>
+                            <SelectItem value="bose">Bose</SelectItem>
+                            <SelectItem value="jbl">JBL</SelectItem>
+                            <SelectItem value="sennheiser">Sennheiser</SelectItem>
+                            <SelectItem value="harman_kardon">Harman Kardon</SelectItem>
+                            <SelectItem value="marshall">Marshall</SelectItem>
+                            <SelectItem value="denon">Denon</SelectItem>
+                            <SelectItem value="yamaha">Yamaha</SelectItem>
+                            <SelectItem value="audio_technica">Audio-Technica</SelectItem>
+                            <SelectItem value="pioneer">Pioneer</SelectItem>
+                            <SelectItem value="beats">Beats</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="bang_olufsen">Bang & Olufsen</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki konsol i gier */}
+                        {filters.categorySpecificFilters?.deviceType === "gaming" && (
+                          <>
+                            <SelectItem value="sony">Sony PlayStation</SelectItem>
+                            <SelectItem value="microsoft">Microsoft Xbox</SelectItem>
+                            <SelectItem value="nintendo">Nintendo</SelectItem>
+                            <SelectItem value="razer">Razer</SelectItem>
+                            <SelectItem value="steelseries">SteelSeries</SelectItem>
+                            <SelectItem value="logitech">Logitech</SelectItem>
+                            <SelectItem value="corsair">Corsair</SelectItem>
+                            <SelectItem value="hyperx">HyperX</SelectItem>
+                            <SelectItem value="msi">MSI</SelectItem>
+                            <SelectItem value="asus">ASUS</SelectItem>
+                            <SelectItem value="turtle_beach">Turtle Beach</SelectItem>
+                            <SelectItem value="thrustmaster">Thrustmaster</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki aparatów i kamer */}
+                        {filters.categorySpecificFilters?.deviceType === "cameras" && (
+                          <>
+                            <SelectItem value="canon">Canon</SelectItem>
+                            <SelectItem value="nikon">Nikon</SelectItem>
+                            <SelectItem value="sony">Sony</SelectItem>
+                            <SelectItem value="fujifilm">Fujifilm</SelectItem>
+                            <SelectItem value="panasonic">Panasonic</SelectItem>
+                            <SelectItem value="olympus">Olympus</SelectItem>
+                            <SelectItem value="gopro">GoPro</SelectItem>
+                            <SelectItem value="dji">DJI</SelectItem>
+                            <SelectItem value="leica">Leica</SelectItem>
+                            <SelectItem value="hasselblad">Hasselblad</SelectItem>
+                            <SelectItem value="pentax">Pentax</SelectItem>
+                            <SelectItem value="kodak">Kodak</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki smartwatchy */}
+                        {filters.categorySpecificFilters?.deviceType === "smartwatches" && (
+                          <>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="garmin">Garmin</SelectItem>
+                            <SelectItem value="fitbit">Fitbit</SelectItem>
+                            <SelectItem value="huawei">Huawei</SelectItem>
+                            <SelectItem value="xiaomi">Xiaomi</SelectItem>
+                            <SelectItem value="amazfit">Amazfit</SelectItem>
+                            <SelectItem value="fossil">Fossil</SelectItem>
+                            <SelectItem value="polar">Polar</SelectItem>
+                            <SelectItem value="suunto">Suunto</SelectItem>
+                            <SelectItem value="withings">Withings</SelectItem>
+                            <SelectItem value="oppo">OPPO</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Dla pozostałych typów urządzeń */}
+                        {!["smartphones", "tablets", "laptops", "desktops", "monitors", "tv", "audio", "gaming", "cameras", "smartwatches"].includes(filters.categorySpecificFilters?.deviceType) && (
+                          <>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="xiaomi">Xiaomi</SelectItem>
+                            <SelectItem value="huawei">Huawei</SelectItem>
+                            <SelectItem value="sony">Sony</SelectItem>
+                            <SelectItem value="lg">LG</SelectItem>
+                            <SelectItem value="hp">HP</SelectItem>
+                            <SelectItem value="dell">Dell</SelectItem>
+                            <SelectItem value="lenovo">Lenovo</SelectItem>
+                            <SelectItem value="asus">ASUS</SelectItem>
+                            <SelectItem value="acer">Acer</SelectItem>
+                            <SelectItem value="philips">Philips</SelectItem>
+                            <SelectItem value="google">Google</SelectItem>
+                            <SelectItem value="microsoft">Microsoft</SelectItem>
+                            <SelectItem value="logitech">Logitech</SelectItem>
+                            <SelectItem value="braun">Braun</SelectItem>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="siemens">Siemens</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Inne */}
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+
+                {/* Filtry dla Dom i Ogród - Typ */}
+                {selectedCategoryName === "Dom i Ogród" && (
+                  <FilterSection title="Typ produktu" icon={<Home size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.homeType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('homeType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz typ" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="furniture">Meble</SelectItem>
+                        <SelectItem value="garden">Ogród</SelectItem>
+                        <SelectItem value="tools">Narzędzia</SelectItem>
+                        <SelectItem value="home_appliances">AGD</SelectItem>
+                        <SelectItem value="kitchen">Wyposażenie kuchni</SelectItem>
+                        <SelectItem value="decoration">Dekoracje</SelectItem>
+                        <SelectItem value="bathroom">Łazienka</SelectItem>
+                        <SelectItem value="lighting">Oświetlenie</SelectItem>
+                        <SelectItem value="textiles">Tekstylia</SelectItem>
+                        <SelectItem value="storage">Przechowywanie</SelectItem>
+                        <SelectItem value="diy">Majsterkowanie</SelectItem>
+                        <SelectItem value="plants">Rośliny</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Dom i Ogród - Marka */}
+                {selectedCategoryName === "Dom i Ogród" && filters.categorySpecificFilters?.homeType && (
+                  <FilterSection title="Marka" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.brand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        
+                        {/* Marki mebli */}
+                        {filters.categorySpecificFilters?.homeType === "furniture" && (
+                          <>
+                            <SelectItem value="ikea">IKEA</SelectItem>
+                            <SelectItem value="bodzio">Bodzio</SelectItem>
+                            <SelectItem value="agata_meble">Agata Meble</SelectItem>
+                            <SelectItem value="black_red_white">Black Red White</SelectItem>
+                            <SelectItem value="jysk">JYSK</SelectItem>
+                            <SelectItem value="vox">VOX</SelectItem>
+                            <SelectItem value="kler">Kler</SelectItem>
+                            <SelectItem value="szynaka">Szynaka</SelectItem>
+                            <SelectItem value="forte">Forte</SelectItem>
+                            <SelectItem value="wajnert">Wajnert</SelectItem>
+                            <SelectItem value="gala_collezione">Gala Collezione</SelectItem>
+                            <SelectItem value="libro">Libro</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki narzędzi */}
+                        {filters.categorySpecificFilters?.homeType === "tools" && (
+                          <>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="makita">Makita</SelectItem>
+                            <SelectItem value="dewalt">DeWalt</SelectItem>
+                            <SelectItem value="stanley">Stanley</SelectItem>
+                            <SelectItem value="milwaukee">Milwaukee</SelectItem>
+                            <SelectItem value="ryobi">Ryobi</SelectItem>
+                            <SelectItem value="skil">Skil</SelectItem>
+                            <SelectItem value="metabo">Metabo</SelectItem>
+                            <SelectItem value="einhell">Einhell</SelectItem>
+                            <SelectItem value="black_decker">Black & Decker</SelectItem>
+                            <SelectItem value="hitachi">Hitachi</SelectItem>
+                            <SelectItem value="topex">Topex</SelectItem>
+                            <SelectItem value="graphite">Graphite</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki dla ogrodu */}
+                        {filters.categorySpecificFilters?.homeType === "garden" && (
+                          <>
+                            <SelectItem value="gardena">Gardena</SelectItem>
+                            <SelectItem value="fiskars">Fiskars</SelectItem>
+                            <SelectItem value="stiga">Stiga</SelectItem>
+                            <SelectItem value="stihl">Stihl</SelectItem>
+                            <SelectItem value="husqvarna">Husqvarna</SelectItem>
+                            <SelectItem value="karcher">Kärcher</SelectItem>
+                            <SelectItem value="al_ko">AL-KO</SelectItem>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="weber">Weber</SelectItem>
+                            <SelectItem value="mcculloch">McCulloch</SelectItem>
+                            <SelectItem value="nac">NAC</SelectItem>
+                            <SelectItem value="cellfast">Cellfast</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki AGD */}
+                        {filters.categorySpecificFilters?.homeType === "home_appliances" && (
+                          <>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="siemens">Siemens</SelectItem>
+                            <SelectItem value="electrolux">Electrolux</SelectItem>
+                            <SelectItem value="whirlpool">Whirlpool</SelectItem>
+                            <SelectItem value="aeg">AEG</SelectItem>
+                            <SelectItem value="samsung">Samsung</SelectItem>
+                            <SelectItem value="lg">LG</SelectItem>
+                            <SelectItem value="miele">Miele</SelectItem>
+                            <SelectItem value="beko">Beko</SelectItem>
+                            <SelectItem value="gorenje">Gorenje</SelectItem>
+                            <SelectItem value="amica">Amica</SelectItem>
+                            <SelectItem value="indesit">Indesit</SelectItem>
+                            <SelectItem value="candy">Candy</SelectItem>
+                            <SelectItem value="haier">Haier</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki kuchenne */}
+                        {filters.categorySpecificFilters?.homeType === "kitchen" && (
+                          <>
+                            <SelectItem value="tefal">Tefal</SelectItem>
+                            <SelectItem value="fissler">Fissler</SelectItem>
+                            <SelectItem value="zwilling">Zwilling</SelectItem>
+                            <SelectItem value="wmf">WMF</SelectItem>
+                            <SelectItem value="villeroy_boch">Villeroy & Boch</SelectItem>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="philips">Philips</SelectItem>
+                            <SelectItem value="zepter">Zepter</SelectItem>
+                            <SelectItem value="kitchenaid">KitchenAid</SelectItem>
+                            <SelectItem value="ambition">Ambition</SelectItem>
+                            <SelectItem value="gerlach">Gerlach</SelectItem>
+                            <SelectItem value="delimano">Delimano</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Dla pozostałych typów */}
+                        {!["furniture", "tools", "garden", "home_appliances", "kitchen"].includes(filters.categorySpecificFilters?.homeType) && (
+                          <>
+                            <SelectItem value="ikea">IKEA</SelectItem>
+                            <SelectItem value="castorama">Castorama</SelectItem>
+                            <SelectItem value="leroy_merlin">Leroy Merlin</SelectItem>
+                            <SelectItem value="bosch">Bosch</SelectItem>
+                            <SelectItem value="makita">Makita</SelectItem>
+                            <SelectItem value="karcher">Kärcher</SelectItem>
+                            <SelectItem value="philips">Philips</SelectItem>
+                            <SelectItem value="electrolux">Electrolux</SelectItem>
+                            <SelectItem value="gardena">Gardena</SelectItem>
+                            <SelectItem value="vileda">Vileda</SelectItem>
+                            <SelectItem value="fiskars">Fiskars</SelectItem>
+                            <SelectItem value="tefal">Tefal</SelectItem>
+                            <SelectItem value="stanley">Stanley</SelectItem>
+                            <SelectItem value="weber">Weber</SelectItem>
+                          </>
+                        )}
+                        
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Zwierzęta - Typ zwierzęcia */}
+                {selectedCategoryName === "Zwierzęta" && (
+                  <FilterSection title="Typ zwierzęcia" icon={<Dog size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.petType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('petType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz typ" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="dogs">Psy</SelectItem>
+                        <SelectItem value="cats">Koty</SelectItem>
+                        <SelectItem value="birds">Ptaki</SelectItem>
+                        <SelectItem value="rodents">Gryzonie</SelectItem>
+                        <SelectItem value="fish">Ryby</SelectItem>
+                        <SelectItem value="reptiles">Gady</SelectItem>
+                        <SelectItem value="amphibians">Płazy</SelectItem>
+                        <SelectItem value="horses">Konie</SelectItem>
+                        <SelectItem value="farm_animals">Zwierzęta gospodarskie</SelectItem>
+                        <SelectItem value="insects">Owady</SelectItem>
+                        <SelectItem value="accessories">Akcesoria dla zwierząt</SelectItem>
+                        <SelectItem value="food">Karma i odżywki</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Zwierzęta - Marka */}
+                {selectedCategoryName === "Zwierzęta" && filters.categorySpecificFilters?.petType && (
+                  <FilterSection title="Marka" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.brand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        
+                        {/* Marki karmy i akcesoriów dla psów i kotów */}
+                        {["dogs", "cats", "food", "accessories"].includes(filters.categorySpecificFilters?.petType) && (
+                          <>
+                            <SelectItem value="royal_canin">Royal Canin</SelectItem>
+                            <SelectItem value="whiskas">Whiskas</SelectItem>
+                            <SelectItem value="pedigree">Pedigree</SelectItem>
+                            <SelectItem value="purina">Purina</SelectItem>
+                            <SelectItem value="felix">Felix</SelectItem>
+                            <SelectItem value="sheba">Sheba</SelectItem>
+                            <SelectItem value="hills">Hill's</SelectItem>
+                            <SelectItem value="eukanuba">Eukanuba</SelectItem>
+                            <SelectItem value="iams">IAMS</SelectItem>
+                            <SelectItem value="acana">Acana</SelectItem>
+                            <SelectItem value="orijen">Orijen</SelectItem>
+                            <SelectItem value="josera">Josera</SelectItem>
+                            <SelectItem value="brit">Brit</SelectItem>
+                            <SelectItem value="kong">KONG</SelectItem>
+                            <SelectItem value="trixie">Trixie</SelectItem>
+                            <SelectItem value="ruffwear">Ruffwear</SelectItem>
+                            <SelectItem value="flexi">Flexi</SelectItem>
+                            <SelectItem value="beaphar">Beaphar</SelectItem>
+                            <SelectItem value="animonda">Animonda</SelectItem>
+                            <SelectItem value="applaws">Applaws</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki dla ptaków */}
+                        {filters.categorySpecificFilters?.petType === "birds" && (
+                          <>
+                            <SelectItem value="versele_laga">Versele-Laga</SelectItem>
+                            <SelectItem value="vitakraft">Vitakraft</SelectItem>
+                            <SelectItem value="padovan">Padovan</SelectItem>
+                            <SelectItem value="prestige">Prestige</SelectItem>
+                            <SelectItem value="orlux">Orlux</SelectItem>
+                            <SelectItem value="beaphar">Beaphar</SelectItem>
+                            <SelectItem value="trixie">Trixie</SelectItem>
+                            <SelectItem value="ferplast">Ferplast</SelectItem>
+                            <SelectItem value="zolux">Zolux</SelectItem>
+                            <SelectItem value="imac">IMAC</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki dla gryzoni */}
+                        {filters.categorySpecificFilters?.petType === "rodents" && (
+                          <>
+                            <SelectItem value="vitakraft">Vitakraft</SelectItem>
+                            <SelectItem value="versele_laga">Versele-Laga</SelectItem>
+                            <SelectItem value="beaphar">Beaphar</SelectItem>
+                            <SelectItem value="trixie">Trixie</SelectItem>
+                            <SelectItem value="zolux">Zolux</SelectItem>
+                            <SelectItem value="ferplast">Ferplast</SelectItem>
+                            <SelectItem value="karlie">Karlie</SelectItem>
+                            <SelectItem value="savic">Savic</SelectItem>
+                            <SelectItem value="dajana">Dajana</SelectItem>
+                            <SelectItem value="tutti_frutti">Tutti Frutti</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Marki dla ryb */}
+                        {filters.categorySpecificFilters?.petType === "fish" && (
+                          <>
+                            <SelectItem value="tetra">Tetra</SelectItem>
+                            <SelectItem value="jbl">JBL</SelectItem>
+                            <SelectItem value="sera">Sera</SelectItem>
+                            <SelectItem value="tropical">Tropical</SelectItem>
+                            <SelectItem value="aquael">Aquael</SelectItem>
+                            <SelectItem value="eheim">Eheim</SelectItem>
+                            <SelectItem value="fluval">Fluval</SelectItem>
+                            <SelectItem value="oase">OASE</SelectItem>
+                            <SelectItem value="diversa">Diversa</SelectItem>
+                            <SelectItem value="hikari">Hikari</SelectItem>
+                          </>
+                        )}
+                        
+                        {/* Dla pozostałych typów zwierząt */}
+                        {!["dogs", "cats", "birds", "rodents", "fish", "food", "accessories"].includes(filters.categorySpecificFilters?.petType) && (
+                          <>
+                            <SelectItem value="trixie">Trixie</SelectItem>
+                            <SelectItem value="zolux">Zolux</SelectItem>
+                            <SelectItem value="ferplast">Ferplast</SelectItem>
+                            <SelectItem value="exo_terra">Exo Terra</SelectItem>
+                            <SelectItem value="repti_planet">Repti Planet</SelectItem>
+                            <SelectItem value="komodo">Komodo</SelectItem>
+                            <SelectItem value="fluker">Fluker's</SelectItem>
+                            <SelectItem value="tetra">Tetra</SelectItem>
+                            <SelectItem value="beaphar">Beaphar</SelectItem>
+                            <SelectItem value="vitakraft">Vitakraft</SelectItem>
+                          </>
+                        )}
+                        
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Moda - Rodzaj odzieży */}
+                {selectedCategoryName === "Moda" && (
+                  <FilterSection title="Rodzaj odzieży" icon={<Shirt size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.clothingType || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('clothingType', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz rodzaj" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="t_shirts">T-shirty</SelectItem>
+                        <SelectItem value="shirts">Koszule</SelectItem>
+                        <SelectItem value="sweaters">Swetry</SelectItem>
+                        <SelectItem value="pants">Spodnie</SelectItem>
+                        <SelectItem value="jeans">Jeansy</SelectItem>
+                        <SelectItem value="skirts">Spódnice</SelectItem>
+                        <SelectItem value="dresses">Sukienki</SelectItem>
+                        <SelectItem value="jackets">Kurtki</SelectItem>
+                        <SelectItem value="coats">Płaszcze</SelectItem>
+                        <SelectItem value="underwear">Bielizna</SelectItem>
+                        <SelectItem value="shoes">Obuwie</SelectItem>
+                        <SelectItem value="accessories">Akcesoria</SelectItem>
+                        <SelectItem value="sportswear">Odzież sportowa</SelectItem>
+                        <SelectItem value="suits">Garnitury</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Moda - Marka */}
+                {selectedCategoryName === "Moda" && filters.categorySpecificFilters?.clothingType && (
+                  <FilterSection title="Marka" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.brand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="adidas">Adidas</SelectItem>
+                        <SelectItem value="nike">Nike</SelectItem>
+                        <SelectItem value="puma">Puma</SelectItem>
+                        <SelectItem value="reebok">Reebok</SelectItem>
+                        <SelectItem value="under_armour">Under Armour</SelectItem>
+                        <SelectItem value="new_balance">New Balance</SelectItem>
+                        <SelectItem value="tommy_hilfiger">Tommy Hilfiger</SelectItem>
+                        <SelectItem value="calvin_klein">Calvin Klein</SelectItem>
+                        <SelectItem value="hugo_boss">Hugo Boss</SelectItem>
+                        <SelectItem value="lacoste">Lacoste</SelectItem>
+                        <SelectItem value="levi">Levi's</SelectItem>
+                        <SelectItem value="wrangler">Wrangler</SelectItem>
+                        <SelectItem value="zara">Zara</SelectItem>
+                        <SelectItem value="h_m">H&M</SelectItem>
+                        <SelectItem value="reserved">Reserved</SelectItem>
+                        <SelectItem value="gucci">Gucci</SelectItem>
+                        <SelectItem value="versace">Versace</SelectItem>
+                        <SelectItem value="vans">Vans</SelectItem>
+                        <SelectItem value="converse">Converse</SelectItem>
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Moda - Rozmiar */}
+                {selectedCategoryName === "Moda" && filters.categorySpecificFilters?.clothingType && (
+                  <FilterSection title="Rozmiar" icon={<Maximize2 size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.size || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('size', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz rozmiar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="xs">XS</SelectItem>
+                        <SelectItem value="s">S</SelectItem>
+                        <SelectItem value="m">M</SelectItem>
+                        <SelectItem value="l">L</SelectItem>
+                        <SelectItem value="xl">XL</SelectItem>
+                        <SelectItem value="xxl">XXL</SelectItem>
+                        <SelectItem value="xxxl">3XL</SelectItem>
+                        <SelectItem value="custom">Niestandardowy</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtry dla Moda - Płeć */}
+                {selectedCategoryName === "Moda" && filters.categorySpecificFilters?.clothingType && (
+                  <FilterSection title="Dla kogo" icon={<User size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.gender || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('gender', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        <SelectItem value="men">Męskie</SelectItem>
+                        <SelectItem value="women">Damskie</SelectItem>
+                        <SelectItem value="unisex">Unisex</SelectItem>
+                        <SelectItem value="boys">Chłopięce</SelectItem>
+                        <SelectItem value="girls">Dziewczęce</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+
+                {/* Generyczny filtr marki/producenta dla pozostałych kategorii bez specyficznych filtrów */}
+                {!["Motoryzacja", "Nieruchomości", "Rolnictwo", "Elektronika", "Dom i Ogród", "Zwierzęta", "Moda"].includes(selectedCategoryName) && (
+                  <FilterSection title="Marka/Producent" icon={<Bookmark size={16} />}>
+                    <Select
+                      value={filters.categorySpecificFilters?.brand || "all"}
+                      onValueChange={(value) => {
+                        handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wybierz markę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Wszystkie</SelectItem>
+                        {/* Można dodać ogólne marki dla pozostałych kategorii */}
+                        <SelectItem value="other">Inne</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FilterSection>
+                )}
+                
+                {/* Filtr stanu */}
+                <FilterSection title="Stan" icon={<Tag size={16} />}>
+                  <Select
+                    value={filters.categorySpecificFilters?.condition || "all"}
+                    onValueChange={(value) => {
+                      handleCategorySpecificFilterChange('condition', value === "all" ? null : value);
+                    }}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Wybierz stan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Wszystkie</SelectItem>
+                      
+                      {/* Dla kategorii Zwierzęta */}
+                      {selectedCategoryName === "Zwierzęta" && (
+                        <>
+                          <SelectItem value="like_new">Jak nowy</SelectItem>
+                          <SelectItem value="very_good">Bardzo dobry</SelectItem>
+                          <SelectItem value="good">Dobry</SelectItem>
+                          <SelectItem value="acceptable">Akceptowalny</SelectItem>
+                        </>
+                      )}
+                      
+                      {/* Dla kategorii Antyki i Kolekcje */}
+                      {selectedCategoryName === "Antyki i Kolekcje" && (
+                        <>
+                          <SelectItem value="mint">Idealny</SelectItem>
+                          <SelectItem value="near_mint">Prawie idealny</SelectItem>
+                          <SelectItem value="excellent">Doskonały</SelectItem>
+                          <SelectItem value="very_good">Bardzo dobry</SelectItem>
+                          <SelectItem value="good">Dobry</SelectItem>
+                          <SelectItem value="fair">Zadowalający</SelectItem>
+                          <SelectItem value="poor">Słaby</SelectItem>
+                        </>
+                      )}
+                      
+                      {/* Domyślne opcje dla innych kategorii */}
+                      {!["Zwierzęta", "Antyki i Kolekcje"].includes(selectedCategoryName) && (
+                        <>
+                          <SelectItem value="new">Nowy</SelectItem>
+                          <SelectItem value="used">Używany</SelectItem>
+                          <SelectItem value="damaged">Uszkodzony</SelectItem>
+                        </>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </FilterSection>
+                {selectedCategoryName === "Motoryzacja" && (
+                  <>
+                    <FilterSection title="Marka" icon={<Car size={16} />}>
+                      <Select
+                        value={filters.categorySpecificFilters?.brand || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                        }}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Wybierz markę" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Wszystkie</SelectItem>
+                          
+                          {/* Popularne marki europejskie */}
+                          <SelectItem value="alfa_romeo">Alfa Romeo</SelectItem>
+                          <SelectItem value="audi">Audi</SelectItem>
+                          <SelectItem value="bmw">BMW</SelectItem>
+                          <SelectItem value="citroen">Citroën</SelectItem>
+                          <SelectItem value="dacia">Dacia</SelectItem>
+                          <SelectItem value="fiat">Fiat</SelectItem>
+                          <SelectItem value="ford">Ford</SelectItem>
+                          <SelectItem value="hyundai">Hyundai</SelectItem>
+                          <SelectItem value="kia">Kia</SelectItem>
+                          <SelectItem value="mazda">Mazda</SelectItem>
+                          <SelectItem value="mercedes_benz">Mercedes-Benz</SelectItem>
+                          <SelectItem value="nissan">Nissan</SelectItem>
+                          <SelectItem value="opel">Opel</SelectItem>
+                          <SelectItem value="peugeot">Peugeot</SelectItem>
+                          <SelectItem value="renault">Renault</SelectItem>
+                          <SelectItem value="seat">SEAT</SelectItem>
+                          <SelectItem value="skoda">Škoda</SelectItem>
+                          <SelectItem value="suzuki">Suzuki</SelectItem>
+                          <SelectItem value="toyota">Toyota</SelectItem>
+                          <SelectItem value="volkswagen">Volkswagen</SelectItem>
+                          <SelectItem value="volvo">Volvo</SelectItem>
+                          
+                          {/* Marki premium */}
+                          <SelectItem value="aston_martin">Aston Martin</SelectItem>
+                          <SelectItem value="bentley">Bentley</SelectItem>
+                          <SelectItem value="ferrari">Ferrari</SelectItem>
+                          <SelectItem value="jaguar">Jaguar</SelectItem>
+                          <SelectItem value="lamborghini">Lamborghini</SelectItem>
+                          <SelectItem value="land_rover">Land Rover</SelectItem>
+                          <SelectItem value="lexus">Lexus</SelectItem>
+                          <SelectItem value="maserati">Maserati</SelectItem>
+                          <SelectItem value="porsche">Porsche</SelectItem>
+                          <SelectItem value="rolls_royce">Rolls-Royce</SelectItem>
+                          
+                          {/* Marki z USA */}
+                          <SelectItem value="cadillac">Cadillac</SelectItem>
+                          <SelectItem value="chevrolet">Chevrolet</SelectItem>
+                          <SelectItem value="chrysler">Chrysler</SelectItem>
+                          <SelectItem value="dodge">Dodge</SelectItem>
+                          <SelectItem value="jeep">Jeep</SelectItem>
+                          <SelectItem value="tesla">Tesla</SelectItem>
+
+                          {/* Marki azjatyckie */}
+                          <SelectItem value="honda">Honda</SelectItem>
+                          <SelectItem value="infiniti">Infiniti</SelectItem>
+                          <SelectItem value="lexus">Lexus</SelectItem>
+                          <SelectItem value="mitsubishi">Mitsubishi</SelectItem>
+                          <SelectItem value="subaru">Subaru</SelectItem>
+                          
+                          {/* Marki polskie i inne */}
+                          <SelectItem value="polonez">Polonez</SelectItem>
+                          <SelectItem value="fso">FSO</SelectItem>
+                          <SelectItem value="daewoo">Daewoo</SelectItem>
+                          <SelectItem value="saab">Saab</SelectItem>
+                          <SelectItem value="smart">Smart</SelectItem>
+                          <SelectItem value="mini">Mini</SelectItem>
+                          <SelectItem value="other">Inne</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FilterSection>
+                    
+                    <FilterSection title="Rok produkcji" icon={<Calendar size={16} />}>
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="Od" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.yearFrom || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('yearFrom', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                        <Input 
+                          placeholder="Do" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.yearTo || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('yearTo', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                      </div>
+                    </FilterSection>
+                    
+                    <FilterSection title="Przebieg (km)" icon={<Car size={16} />}>
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="Od" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.mileageFrom || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('mileageFrom', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                        <Input 
+                          placeholder="Do" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.mileageTo || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('mileageTo', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                      </div>
+                    </FilterSection>
+                    
+                    <FilterSection title="Rodzaj paliwa" icon={<Car size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.fuelType || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('fuelType', value === 'all' ? null : value);
+                        }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="fuel-all" />
+                          <Label htmlFor="fuel-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="petrol" id="fuel-petrol" />
+                          <Label htmlFor="fuel-petrol">Benzyna</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="diesel" id="fuel-diesel" />
+                          <Label htmlFor="fuel-diesel">Diesel</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="electric" id="fuel-electric" />
+                          <Label htmlFor="fuel-electric">Elektryczny</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="hybrid" id="fuel-hybrid" />
+                          <Label htmlFor="fuel-hybrid">Hybryda</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="lpg" id="fuel-lpg" />
+                          <Label htmlFor="fuel-lpg">LPG</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                  </>
+                )}
+                
+                {selectedCategoryName === "Nieruchomości" && (
+                  <>
+                    <FilterSection title="Typ nieruchomości" icon={<Home size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.propertyType || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('propertyType', value === 'all' ? null : value);
+                        }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="property-all" />
+                          <Label htmlFor="property-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="apartment" id="property-apartment" />
+                          <Label htmlFor="property-apartment">Mieszkanie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="house" id="property-house" />
+                          <Label htmlFor="property-house">Dom</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="plot" id="property-plot" />
+                          <Label htmlFor="property-plot">Działka</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="commercial" id="property-commercial" />
+                          <Label htmlFor="property-commercial">Lokal użytkowy</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                    
+                    <FilterSection title="Powierzchnia (m²)" icon={<Home size={16} />}>
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="Od" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.areaFrom || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('areaFrom', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                        <Input 
+                          placeholder="Do" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.areaTo || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('areaTo', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                      </div>
+                    </FilterSection>
+                    
+                    <FilterSection title="Liczba pokoi" icon={<Home size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.rooms || "all"}
+                        onValueChange={(value) => {
+                          handleFilterChange('categorySpecificFilters', {
+                            ...filters.categorySpecificFilters,
+                            rooms: value === 'all' ? null : value
+                          });
+                        }}
+                        className="grid grid-cols-3 gap-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="rooms-all" />
+                          <Label htmlFor="rooms-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="rooms-1" />
+                          <Label htmlFor="rooms-1">1</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="2" id="rooms-2" />
+                          <Label htmlFor="rooms-2">2</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="3" id="rooms-3" />
+                          <Label htmlFor="rooms-3">3</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="4" id="rooms-4" />
+                          <Label htmlFor="rooms-4">4</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="5+" id="rooms-5plus" />
+                          <Label htmlFor="rooms-5plus">5+</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                  </>
+                )}
+                
+                {selectedCategoryName === "Elektronika" && (
+                  <>
+                    <FilterSection title="Typ elektroniki" icon={<Smartphone size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.electronicsType || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('electronicsType', value === 'all' ? null : value);
+                        }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="electronics-all" />
+                          <Label htmlFor="electronics-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="phone" id="electronics-phone" />
+                          <Label htmlFor="electronics-phone">Telefony</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="computer" id="electronics-computer" />
+                          <Label htmlFor="electronics-computer">Komputery</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="tv" id="electronics-tv" />
+                          <Label htmlFor="electronics-tv">Telewizory</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="photo" id="electronics-photo" />
+                          <Label htmlFor="electronics-photo">Fotografia</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="audio" id="electronics-audio" />
+                          <Label htmlFor="electronics-audio">Audio</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                    
+                    <FilterSection title="Marka" icon={<Smartphone size={16} />}>
+                      <Select
+                        value={filters.categorySpecificFilters?.brand || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('brand', value === "all" ? null : value);
+                        }}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Wybierz markę" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Wszystkie</SelectItem>
+                          
+                          {/* Smartfony i tablety */}
+                          <SelectItem value="apple">Apple</SelectItem>
+                          <SelectItem value="samsung">Samsung</SelectItem>
+                          <SelectItem value="xiaomi">Xiaomi</SelectItem>
+                          <SelectItem value="huawei">Huawei</SelectItem>
+                          <SelectItem value="oppo">Oppo</SelectItem>
+                          <SelectItem value="vivo">Vivo</SelectItem>
+                          <SelectItem value="realme">Realme</SelectItem>
+                          <SelectItem value="oneplus">OnePlus</SelectItem>
+                          <SelectItem value="google">Google</SelectItem>
+                          
+                          {/* Komputery i laptopy */}
+                          <SelectItem value="dell">Dell</SelectItem>
+                          <SelectItem value="hp">HP</SelectItem>
+                          <SelectItem value="lenovo">Lenovo</SelectItem>
+                          <SelectItem value="asus">Asus</SelectItem>
+                          <SelectItem value="acer">Acer</SelectItem>
+                          <SelectItem value="msi">MSI</SelectItem>
+                          <SelectItem value="microsoft">Microsoft</SelectItem>
+                          
+                          {/* TV i Audio */}
+                          <SelectItem value="lg">LG</SelectItem>
+                          <SelectItem value="sony">Sony</SelectItem>
+                          <SelectItem value="philips">Philips</SelectItem>
+                          <SelectItem value="panasonic">Panasonic</SelectItem>
+                          <SelectItem value="toshiba">Toshiba</SelectItem>
+                          <SelectItem value="bose">Bose</SelectItem>
+                          <SelectItem value="jbl">JBL</SelectItem>
+                          <SelectItem value="sonos">Sonos</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FilterSection>
+                  </>
+                )}
+                
+                {selectedCategoryName === "Firma i Przemysł" && (
+                  <>
+                    <FilterSection title="Branża" icon={<User size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.industryType || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('industryType', value === 'all' ? null : value);
+                        }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="industry-all" />
+                          <Label htmlFor="industry-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="production" id="industry-production" />
+                          <Label htmlFor="industry-production">Produkcja</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="logistics" id="industry-logistics" />
+                          <Label htmlFor="industry-logistics">Logistyka</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="construction" id="industry-construction" />
+                          <Label htmlFor="industry-construction">Budownictwo</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="gastronomic" id="industry-gastronomic" />
+                          <Label htmlFor="industry-gastronomic">Gastronomia</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="office" id="industry-office" />
+                          <Label htmlFor="industry-office">Biuro</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                    
+                    <FilterSection title="Typ produktu" icon={<ShoppingBag size={16} />}>
+                      <RadioGroup
+                        value={filters.categorySpecificFilters?.productType || "all"}
+                        onValueChange={(value) => {
+                          handleCategorySpecificFilterChange('productType', value === 'all' ? null : value);
+                        }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="all" id="product-all" />
+                          <Label htmlFor="product-all">Wszystkie</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="equipment" id="product-equipment" />
+                          <Label htmlFor="product-equipment">Sprzęt</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="materials" id="product-materials" />
+                          <Label htmlFor="product-materials">Materiały</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="tools" id="product-tools" />
+                          <Label htmlFor="product-tools">Narzędzia</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="services" id="product-services" />
+                          <Label htmlFor="product-services">Usługi</Label>
+                        </div>
+                      </RadioGroup>
+                    </FilterSection>
+                    
+                    <FilterSection title="Wiek produktu (lata)" icon={<Calendar size={16} />}>
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="Od" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.ageFrom || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('ageFrom', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                        <Input 
+                          placeholder="Do" 
+                          type="number"
+                          value={filters.categorySpecificFilters?.ageTo || ""}
+                          onChange={(e) => {
+                            handleCategorySpecificFilterChange('ageTo', e.target.value ? Number(e.target.value) : null);
+                          }}
+                        />
+                      </div>
+                    </FilterSection>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Helper component for filter sections
+function FilterSection({ 
+  title, 
+  icon,
+  children 
+}: { 
+  title: string; 
+  icon?: React.ReactNode; 
+  children: React.ReactNode 
+}) {
+  return (
+    <div className="mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
+        {icon && <span className="text-primary-500">{icon}</span>}
+        {title}
+      </h3>
+      <div className="pt-1">
+        {children}
+      </div>
+    </div>
+  );
+}

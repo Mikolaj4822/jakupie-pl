@@ -1,0 +1,879 @@
+// Translation keys for the application
+// English and Polish translations
+
+type TranslationKey = {
+  en: string;
+  pl: string;
+};
+
+type Translations = {
+  [key: string]: TranslationKey;
+};
+
+export const translations: Translations = {
+  // Common filter translations
+  "filters.advancedFilters": {
+    en: "Advanced filters",
+    pl: "Filtry zaawansowane"
+  },
+  "filters.categorySpecific": {
+    en: "Category specific filters",
+    pl: "Filtry specyficzne dla kategorii"
+  },
+  "filters.resetCategoryFilters": {
+    en: "Reset category filters",
+    pl: "Resetuj filtry kategorii"
+  },
+  "filters.categories": {
+    en: "Categories",
+    pl: "Kategorie"
+  },
+  "categories.all": {
+    en: "All categories",
+    pl: "Wszystkie kategorie"
+  },
+  "filters.resetAll": {
+    en: "Reset all filters",
+    pl: "Resetuj wszystkie filtry"
+  },
+  "filters.all": {
+    en: "All",
+    pl: "Wszystkie"
+  },
+  "filters.min": {
+    en: "Min",
+    pl: "Min"
+  },
+  "filters.max": {
+    en: "Max",
+    pl: "Max"
+  },
+  "filters.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.sort.title": {
+    en: "Sort by",
+    pl: "Sortuj według"
+  },
+  "filters.sort.newest": {
+    en: "Newest first",
+    pl: "Od najnowszych"
+  },
+  "filters.sort.oldest": {
+    en: "Oldest first",
+    pl: "Od najstarszych"
+  },
+  "filters.sort.priceLow": {
+    en: "Lowest price",
+    pl: "Cena: od najniższej"
+  },
+  "filters.sort.priceHigh": {
+    en: "Highest price",
+    pl: "Cena: od najwyższej"
+  },
+  "filters.price.title": {
+    en: "Price",
+    pl: "Cena"
+  },
+  "filters.price.min": {
+    en: "Min price",
+    pl: "Cena minimalna"
+  },
+  "filters.price.max": {
+    en: "Max price",
+    pl: "Cena maksymalna"
+  },
+  "filters.location.title": {
+    en: "Location",
+    pl: "Lokalizacja"
+  },
+  "filters.location.placeholder": {
+    en: "Enter location",
+    pl: "Podaj lokalizację"
+  },
+  "filters.datePosted.title": {
+    en: "Date posted",
+    pl: "Data dodania"
+  },
+  "filters.datePosted.anytime": {
+    en: "Anytime",
+    pl: "Dowolna data"
+  },
+  "filters.datePosted.today": {
+    en: "Today",
+    pl: "Dzisiaj"
+  },
+  "filters.datePosted.yesterday": {
+    en: "Yesterday",
+    pl: "Wczoraj"
+  },
+  "filters.datePosted.lastWeek": {
+    en: "Last 7 days",
+    pl: "Ostatnie 7 dni"
+  },
+  "filters.datePosted.lastMonth": {
+    en: "Last 30 days",
+    pl: "Ostatnie 30 dni"
+  },
+  "filters.condition.title": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.condition.new": {
+    en: "New",
+    pl: "Nowy"
+  },
+  "filters.condition.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.condition.refurbished": {
+    en: "Refurbished",
+    pl: "Odnowiony"
+  },
+  "filters.condition.damaged": {
+    en: "Damaged",
+    pl: "Uszkodzony"
+  },
+  "filters.delivery.title": {
+    en: "Delivery options",
+    pl: "Opcje dostawy"
+  },
+  "filters.delivery.shipping": {
+    en: "Shipping",
+    pl: "Wysyłka"
+  },
+  "filters.delivery.pickup": {
+    en: "Local pickup",
+    pl: "Odbiór osobisty"
+  },
+  "filters.sellerType.title": {
+    en: "Seller type",
+    pl: "Rodzaj sprzedającego"
+  },
+  "filters.sellerType.private": {
+    en: "Private",
+    pl: "Osoba prywatna"
+  },
+  "filters.sellerType.business": {
+    en: "Business",
+    pl: "Firma"
+  },
+  
+  // Agriculture filters
+  "filters.agriculture.type": {
+    en: "Type",
+    pl: "Typ"
+  },
+  "filters.agriculture.typePlaceholder": {
+    en: "Select type",
+    pl: "Wybierz typ"
+  },
+  "filters.agriculture.tractors": {
+    en: "Tractors",
+    pl: "Traktory"
+  },
+  "filters.agriculture.combines": {
+    en: "Combines",
+    pl: "Kombajny"
+  },
+  "filters.agriculture.seeders": {
+    en: "Seeders",
+    pl: "Siewniki"
+  },
+  "filters.agriculture.plows": {
+    en: "Plows",
+    pl: "Pługi"
+  },
+  "filters.agriculture.harvesters": {
+    en: "Harvesters",
+    pl: "Żniwiarki"
+  },
+  "filters.agriculture.sprayers": {
+    en: "Sprayers",
+    pl: "Opryskiwacze"
+  },
+  "filters.agriculture.livestock": {
+    en: "Livestock",
+    pl: "Hodowla zwierząt"
+  },
+  "filters.agriculture.accessories": {
+    en: "Accessories",
+    pl: "Akcesoria rolnicze"
+  },
+  "filters.agriculture.parts": {
+    en: "Parts",
+    pl: "Części zamienne"
+  },
+  "filters.agriculture.tools": {
+    en: "Tools",
+    pl: "Narzędzia"
+  },
+  "filters.agriculture.irrigation": {
+    en: "Irrigation",
+    pl: "Systemy nawadniania"
+  },
+  "filters.agriculture.other": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.agriculture.brand": {
+    en: "Brand",
+    pl: "Marka"
+  },
+  "filters.agriculture.brandPlaceholder": {
+    en: "Select brand",
+    pl: "Wybierz markę"
+  },
+  "filters.agriculture.otherBrand": {
+    en: "Other brand",
+    pl: "Inna marka"
+  },
+  "filters.agriculture.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.agriculture.new": {
+    en: "New",
+    pl: "Nowy"
+  },
+  "filters.agriculture.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.agriculture.refurbished": {
+    en: "Refurbished",
+    pl: "Odnowiony"
+  },
+  "filters.agriculture.forParts": {
+    en: "For parts",
+    pl: "Na części"
+  },
+  "filters.agriculture.year": {
+    en: "Year of production",
+    pl: "Rok produkcji"
+  },
+  "filters.agriculture.yearMin": {
+    en: "Min year",
+    pl: "Min rok"
+  },
+  "filters.agriculture.yearMax": {
+    en: "Max year",
+    pl: "Max rok"
+  },
+  
+  // Real Estate filters
+  "filters.realestate.type": {
+    en: "Property type",
+    pl: "Typ nieruchomości"
+  },
+  "filters.realestate.typePlaceholder": {
+    en: "Select property type",
+    pl: "Wybierz typ nieruchomości"
+  },
+  "filters.realestate.apartment": {
+    en: "Apartment",
+    pl: "Mieszkanie"
+  },
+  "filters.realestate.house": {
+    en: "House",
+    pl: "Dom"
+  },
+  "filters.realestate.land": {
+    en: "Land",
+    pl: "Działka"
+  },
+  "filters.realestate.commercial": {
+    en: "Commercial",
+    pl: "Lokal użytkowy"
+  },
+  "filters.realestate.garage": {
+    en: "Garage",
+    pl: "Garaż"
+  },
+  "filters.realestate.room": {
+    en: "Room",
+    pl: "Pokój"
+  },
+  "filters.realestate.office": {
+    en: "Office",
+    pl: "Biuro"
+  },
+  "filters.realestate.hall": {
+    en: "Hall",
+    pl: "Hala"
+  },
+  "filters.realestate.vacation": {
+    en: "Vacation property",
+    pl: "Nieruchomość wakacyjna"
+  },
+  "filters.realestate.agricultural": {
+    en: "Agricultural property",
+    pl: "Grunt rolny"
+  },
+  "filters.realestate.investment": {
+    en: "Investment property",
+    pl: "Nieruchomość inwestycyjna"
+  },
+  "filters.realestate.surface": {
+    en: "Surface area",
+    pl: "Powierzchnia"
+  },
+  "filters.realestate.surfaceMin": {
+    en: "Min area (m²)",
+    pl: "Min powierzchnia (m²)"
+  },
+  "filters.realestate.surfaceMax": {
+    en: "Max area (m²)",
+    pl: "Max powierzchnia (m²)"
+  },
+  "filters.realestate.rooms": {
+    en: "Number of rooms",
+    pl: "Liczba pokoi"
+  },
+  "filters.realestate.roomsPlaceholder": {
+    en: "Select number of rooms",
+    pl: "Wybierz liczbę pokoi"
+  },
+  "filters.realestate.floor": {
+    en: "Floor",
+    pl: "Piętro"
+  },
+  "filters.realestate.floorPlaceholder": {
+    en: "Select floor",
+    pl: "Wybierz piętro"
+  },
+  "filters.realestate.basement": {
+    en: "Basement",
+    pl: "Piwnica"
+  },
+  "filters.realestate.groundFloor": {
+    en: "Ground floor",
+    pl: "Parter"
+  },
+  "filters.realestate.floor5Plus": {
+    en: "5th floor and above",
+    pl: "5 piętro i wyżej"
+  },
+  "filters.realestate.attic": {
+    en: "Attic",
+    pl: "Poddasze"
+  },
+  "filters.realestate.marketType": {
+    en: "Market type",
+    pl: "Typ rynku"
+  },
+  "filters.realestate.primary": {
+    en: "Primary market",
+    pl: "Rynek pierwotny"
+  },
+  "filters.realestate.secondary": {
+    en: "Secondary market",
+    pl: "Rynek wtórny"
+  },
+  
+  // Animals filters
+  "filters.animals.type": {
+    en: "Animal type",
+    pl: "Typ zwierzęcia"
+  },
+  "filters.animals.typePlaceholder": {
+    en: "Select animal type",
+    pl: "Wybierz typ zwierzęcia"
+  },
+  "filters.animals.dogs": {
+    en: "Dogs",
+    pl: "Psy"
+  },
+  "filters.animals.cats": {
+    en: "Cats",
+    pl: "Koty"
+  },
+  "filters.animals.birds": {
+    en: "Birds",
+    pl: "Ptaki"
+  },
+  "filters.animals.fish": {
+    en: "Fish",
+    pl: "Ryby"
+  },
+  "filters.animals.reptiles": {
+    en: "Reptiles",
+    pl: "Gady"
+  },
+  "filters.animals.smallMammals": {
+    en: "Small mammals",
+    pl: "Małe ssaki"
+  },
+  "filters.animals.farmAnimals": {
+    en: "Farm animals",
+    pl: "Zwierzęta gospodarskie"
+  },
+  "filters.animals.exotic": {
+    en: "Exotic animals",
+    pl: "Zwierzęta egzotyczne"
+  },
+  "filters.animals.insects": {
+    en: "Insects",
+    pl: "Owady"
+  },
+  "filters.animals.accessories": {
+    en: "Accessories",
+    pl: "Akcesoria"
+  },
+  "filters.animals.food": {
+    en: "Food",
+    pl: "Karma"
+  },
+  "filters.animals.age": {
+    en: "Age",
+    pl: "Wiek"
+  },
+  "filters.animals.ageBaby": {
+    en: "Baby",
+    pl: "Młode"
+  },
+  "filters.animals.ageYoung": {
+    en: "Young",
+    pl: "Młody"
+  },
+  "filters.animals.ageAdult": {
+    en: "Adult",
+    pl: "Dorosły"
+  },
+  "filters.animals.ageSenior": {
+    en: "Senior",
+    pl: "Senior"
+  },
+  "filters.animals.purpose": {
+    en: "Purpose",
+    pl: "Cel"
+  },
+  "filters.animals.forSale": {
+    en: "For sale",
+    pl: "Na sprzedaż"
+  },
+  "filters.animals.forAdoption": {
+    en: "For adoption",
+    pl: "Do adopcji"
+  },
+  "filters.animals.forBreeding": {
+    en: "For breeding",
+    pl: "Do hodowli"
+  },
+  "filters.animals.lostFound": {
+    en: "Lost/Found",
+    pl: "Zaginione/Znalezione"
+  },
+  
+  // Category name translations
+  "category.electronics": {
+    en: "Electronics",
+    pl: "Elektronika"
+  },
+  "category.realestate": {
+    en: "Real Estate",
+    pl: "Nieruchomości"
+  },
+  "category.automotive": {
+    en: "Automotive",
+    pl: "Motoryzacja"
+  },
+  "category.fashion": {
+    en: "Fashion",
+    pl: "Moda"
+  },
+  "category.homeGarden": {
+    en: "Home & Garden",
+    pl: "Dom i Ogród"
+  },
+  "category.agriculture": {
+    en: "Agriculture",
+    pl: "Rolnictwo"
+  },
+  "category.sport": {
+    en: "Sport & Hobby",
+    pl: "Sport i Hobby"
+  },
+  "category.children": {
+    en: "For Children",
+    pl: "Dla Dzieci"
+  },
+  "category.collectibles": {
+    en: "Antiques & Collectibles",
+    pl: "Antyki i Kolekcje"
+  },
+  "category.health": {
+    en: "Health & Beauty",
+    pl: "Zdrowie i Uroda"
+  },
+  "category.animals": {
+    en: "Animals",
+    pl: "Zwierzęta"
+  },
+  "category.business": {
+    en: "Business & Industry",
+    pl: "Firma i Przemysł"
+  },
+  "category.services": {
+    en: "Services",
+    pl: "Usługi"
+  },
+  "category.rental": {
+    en: "Rental",
+    pl: "Wypożyczalnia"
+  },
+  "category.giveaway": {
+    en: "Give Away",
+    pl: "Oddam za darmo"
+  },
+  "category.jobs": {
+    en: "Jobs",
+    pl: "Praca"
+  },
+  "category.music": {
+    en: "Music & Education",
+    pl: "Muzyka i Edukacja"
+  },
+  "category.accommodation": {
+    en: "Accommodation",
+    pl: "Noclegi"
+  },
+  
+  // App related translations
+  "app.name": {
+    en: "JaKupię.pl",
+    pl: "JaKupię.pl"
+  },
+  "app.slogan": {
+    en: "Your demands, our priority",
+    pl: "Twoje potrzeby, nasz priorytet"
+  },
+  "app.createAccount": {
+    en: "Create Account",
+    pl: "Załóż konto"
+  },
+  "app.login": {
+    en: "Log In",
+    pl: "Zaloguj się"
+  },
+  "app.logout": {
+    en: "Log Out",
+    pl: "Wyloguj się"
+  },
+  "app.register": {
+    en: "Register",
+    pl: "Zarejestruj się"
+  },
+  
+  // Navigation
+  "nav.home": {
+    en: "Home",
+    pl: "Strona główna"
+  },
+  "nav.browse": {
+    en: "Browse Ads",
+    pl: "Przeglądaj ogłoszenia"
+  },
+  "nav.howItWorks": {
+    en: "How It Works",
+    pl: "Jak to działa"
+  },
+  "nav.support": {
+    en: "Support",
+    pl: "Wsparcie"
+  },
+  "nav.signIn": {
+    en: "Sign In",
+    pl: "Zaloguj się"
+  },
+  "nav.postAd": {
+    en: "Post an Ad",
+    pl: "Dodaj ogłoszenie"
+  },
+  
+  // Footer
+  "footer.description": {
+    en: "JaKupię.pl is a reverse marketplace where you post what you want to buy and sellers contact you with offers.",
+    pl: "JaKupię.pl to odwrócony marketplace, gdzie zamieszczasz ogłoszenie o tym, co chcesz kupić, a sprzedający kontaktują się z ofertami."
+  },
+  "footer.quickLinks": {
+    en: "Quick Links",
+    pl: "Szybkie linki"
+  },
+  "footer.support": {
+    en: "Support",
+    pl: "Wsparcie"
+  },
+  "footer.stayUpdated": {
+    en: "Stay Updated",
+    pl: "Bądź na bieżąco"
+  },
+  "footer.newsletter": {
+    en: "Subscribe to our newsletter for the latest updates and offers",
+    pl: "Zapisz się do newslettera, aby otrzymywać najnowsze aktualizacje i oferty"
+  },
+  "footer.subscribe": {
+    en: "Subscribe",
+    pl: "Zapisz się"
+  },
+  "footer.copyright": {
+    en: "All rights reserved",
+    pl: "Wszelkie prawa zastrzeżone"
+  },
+  
+  // Categories
+  "categories.title": {
+    en: "Categories",
+    pl: "Kategorie"
+  },
+  
+  // Support page
+  "support.contact.title": {
+    en: "Contact Us",
+    pl: "Kontakt z nami"
+  },
+  "support.contact.desc": {
+    en: "We're here to help. Contact us if you have any questions or issues.",
+    pl: "Jesteśmy tu, aby pomóc. Skontaktuj się z nami, jeśli masz pytania lub problemy."
+  },
+  "support.phone": {
+    en: "Phone",
+    pl: "Telefon"
+  },
+  "support.email": {
+    en: "Email",
+    pl: "Email"
+  },
+  "support.address": {
+    en: "Address",
+    pl: "Adres"
+  },
+  "support.phone.desc": {
+    en: "Our team is available from Monday to Friday, 9:00 - 17:00.",
+    pl: "Nasz zespół jest dostępny od poniedziałku do piątku, 9:00 - 17:00."
+  },
+  "support.email.desc": {
+    en: "We respond to all messages within 24 hours.",
+    pl: "Odpowiadamy na wszystkie wiadomości w ciągu 24 godzin."
+  },
+  "support.address.desc": {
+    en: "Visit our headquarters.",
+    pl: "Odwiedź naszą siedzibę."
+  },
+  "support.helpCenter": {
+    en: "Help Center",
+    pl: "Centrum pomocy"
+  },
+  "support.safetyTips": {
+    en: "Safety Tips",
+    pl: "Porady bezpieczeństwa"
+  },
+  "support.contactUs": {
+    en: "Contact Us",
+    pl: "Kontakt"
+  },
+  "support.privacyPolicy": {
+    en: "Privacy Policy",
+    pl: "Polityka prywatności"
+  },
+  "support.terms": {
+    en: "Terms of Service",
+    pl: "Warunki korzystania z usługi"
+  },
+  
+  // Home & Garden (Dom i Ogród) filters
+  "filters.homeGarden.type": {
+    en: "Type",
+    pl: "Typ"
+  },
+  "filters.homeGarden.typePlaceholder": {
+    en: "Select type",
+    pl: "Wybierz typ"
+  },
+  "filters.homeGarden.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.homeGarden.new": {
+    en: "New",
+    pl: "Nowy"
+  },
+  "filters.homeGarden.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.homeGarden.refurbished": {
+    en: "Refurbished",
+    pl: "Odnowiony"
+  },
+  "filters.homeGarden.damaged": {
+    en: "Damaged",
+    pl: "Uszkodzony"
+  },
+  "filters.homeGarden.material": {
+    en: "Material",
+    pl: "Materiał"
+  },
+  
+  // Automotive (Motoryzacja) filters
+  "filters.auto.vehicleType": {
+    en: "Vehicle type",
+    pl: "Typ pojazdu"
+  },
+  "filters.auto.brand": {
+    en: "Brand",
+    pl: "Marka"
+  },
+  "filters.auto.year": {
+    en: "Year",
+    pl: "Rok produkcji"
+  },
+  "filters.auto.yearMin": {
+    en: "Min year",
+    pl: "Od roku"
+  },
+  "filters.auto.yearMax": {
+    en: "Max year",
+    pl: "Do roku"
+  },
+  "filters.auto.fuel": {
+    en: "Fuel type",
+    pl: "Rodzaj paliwa"
+  },
+  "filters.auto.petrol": {
+    en: "Petrol",
+    pl: "Benzyna"
+  },
+  "filters.auto.diesel": {
+    en: "Diesel",
+    pl: "Diesel"
+  },
+  "filters.auto.electric": {
+    en: "Electric",
+    pl: "Elektryczny"
+  },
+  "filters.auto.hybrid": {
+    en: "Hybrid",
+    pl: "Hybryda"
+  },
+  "filters.auto.lpg": {
+    en: "LPG",
+    pl: "LPG"
+  },
+  "filters.auto.otherFuel": {
+    en: "Other",
+    pl: "Inne"
+  },
+  "filters.auto.mileage": {
+    en: "Mileage",
+    pl: "Przebieg"
+  },
+  "filters.auto.mileageMin": {
+    en: "Min mileage",
+    pl: "Min przebieg"
+  },
+  "filters.auto.mileageMax": {
+    en: "Max mileage",
+    pl: "Max przebieg"
+  },
+  
+  // Generic filters that appear in filter sections
+  "filters.condition.any": {
+    en: "Any condition",
+    pl: "Dowolny stan"
+  },
+  "filters.homeGarden.type": {
+    en: "Type",
+    pl: "Typ"
+  },
+  "filters.homeGarden.condition": {
+    en: "Condition",
+    pl: "Stan"
+  },
+  "filters.homeGarden.new": {
+    en: "New",
+    pl: "Nowy" 
+  },
+  "filters.homeGarden.used": {
+    en: "Used",
+    pl: "Używany"
+  },
+  "filters.homeGarden.refurbished": {
+    en: "Refurbished",
+    pl: "Odnowiony"
+  },
+  "filters.homeGarden.damaged": {
+    en: "Damaged",
+    pl: "Uszkodzony"
+  },
+  "filters.homeGarden.material": {
+    en: "Material",
+    pl: "Materiał"
+  },
+  "filters.datePosted.any": {
+    en: "Any date",
+    pl: "Dowolna data"
+  },
+  "filters.datePosted.3days": {
+    en: "Last 3 days",
+    pl: "Ostatnie 3 dni"
+  },
+  "filters.datePosted.week": {
+    en: "Last 7 days",
+    pl: "Ostatni tydzień"
+  },
+  "filters.datePosted.month": {
+    en: "Last 30 days",
+    pl: "Ostatni miesiąc"
+  },
+  "filters.sellerType.all": {
+    en: "All seller types",
+    pl: "Wszyscy sprzedający"
+  },
+  "filters.delivery.personal": {
+    en: "Local pickup",
+    pl: "Odbiór osobisty"
+  },
+  
+  // Browser page and filter specific translations
+  "browse.title": {
+    en: "Browse all ads",
+    pl: "Przeglądaj ogłoszenia"
+  },
+  "browse.subtitle": {
+    en: "Find what you need from our wide selection of offers",
+    pl: "Znajdź to, czego szukasz spośród naszych licznych ofert"
+  },
+  "browse.search": {
+    en: "Search for ads",
+    pl: "Szukaj ogłoszeń"
+  },
+  "browse.searchButton": {
+    en: "Search",
+    pl: "Szukaj"
+  },
+  "browse.noResults": {
+    en: "No results found",
+    pl: "Nie znaleziono wyników"
+  },
+  "browse.noResults.desc": {
+    en: "Try changing your search criteria or creating a new ad",
+    pl: "Spróbuj zmienić kryteria wyszukiwania lub dodać nowe ogłoszenie"
+  },
+  "browse.filters": {
+    en: "Filters",
+    pl: "Filtry"
+  },
+  "browse.applyFilters": {
+    en: "Apply filters",
+    pl: "Zastosuj filtry"
+  }
+};
+
+export const getTranslation = (key: string, language: string): string => {
+  const translation = translations[key];
+  if (!translation) return key;
+  return translation[language as keyof TranslationKey] || translation.en || key;
+};
